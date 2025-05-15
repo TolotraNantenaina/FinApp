@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link, useRouter } from 'expo-router'; // Ajouter l'importation
+import { Pressable } from 'react-native';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 // ProgressBar Component
@@ -18,6 +20,15 @@ const SummaryItem = ({ title, amount }: { title: string, amount: string }) => (
 
 // Main Component
 const Dashboard = () => {
+  const router = useRouter();
+
+  const openModal = (type: string) => {
+    router.push({
+      pathname: '/(modals)/modal',
+      params: { type: type }
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -38,12 +49,26 @@ const Dashboard = () => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.accentButton]}>
+        {/* <Link href={{pathname : "/(modals)/modal", params: { type: 'credit' }}} asChild>
+          <Pressable>
+            {({ pressed }) => ( */}
+        <TouchableOpacity style={[styles.button, styles.accentButton]}
+          onPress={()=>openModal('credit')}>
           <Text style={styles.buttonText}>Ajouter un Crédit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.destructiveButton]}>
+            {/* )}
+          </Pressable>
+        </Link> */}
+        {/* <Link href={{pathname : "/(modals)/modal", params: { type: 'debit' }}} asChild>
+          <Pressable>
+            {({ pressed }) => ( */}
+        <TouchableOpacity  style={[styles.button, styles.destructiveButton]}
+          onPress={()=>openModal('debit')}>
           <Text style={styles.buttonText}>Ajouter un Débit</Text>
         </TouchableOpacity>
+            {/* )}
+          </Pressable>
+        </Link> */}
       </View>
 
       <View style={styles.card}>
