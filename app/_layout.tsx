@@ -7,8 +7,14 @@ import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Assurez-vous d'installer cette bibliothèque
+// import { SQLiteProvider, useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
+
+import { migrateDbIfNeeded } from '@/database/migration';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { connectToDatabase, isUserTableEmpty, isTransactionsTableEmpty } from '@/store/database';
+import AddUserModal from '@/components/AddUser';
+import ModalScreen from './(modals)/modal';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,6 +34,8 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const [isUserEmpty, setIsUserEmpty] = useState(true);
+  const [isTransactionsEmpty, setIsTransactionsEmpty] = useState(true);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -40,8 +48,31 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  // Initialisation de la base de données
+  useEffect(() => {
+    const initializeDatabase = async () => {
+      const db = await connectToDatabase();
+      await migrateDbIfNeeded(db); // Exécuter la migration
+      const EmptyUser: boolean = await isUserTableEmpty();
+      const EmptyTransaction: boolean = await isTransactionsTableEmpty();
+      setIsUserEmpty(EmptyUser);
+      setIsTransactionsEmpty(EmptyTransaction);
+    };
+
+    initializeDatabase();
+  }, []);
+
+  // Vérifiez les états avant de rendre
   if (!loaded) {
     return null;
+  }
+
+  if (isUserEmpty) {
+    return <AddUserModal />;
+  }
+
+  if (isTransactionsEmpty) {
+    return <ModalScreen />;
   }
 
   return <RootLayoutNav />;
@@ -72,8 +103,10 @@ function RootLayoutNav() {
           </>
         )}
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(modals)" options={{ headerShown: false, presentation: 'modal' }} />
+        {/* <SQLiteProvider databaseName="financeApp.db" onInit={migrateDbIfNeeded}> */}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(modals)" options={{ headerShown: false, presentation: 'modal' }} />
+        {/* </SQLiteProvider> */}
       </Stack>
     </ThemeProvider>
   );

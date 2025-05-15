@@ -330,7 +330,6 @@ const Pagination = ({ itemsPerPage, setItemsPerPage, currentPage, setCurrentPage
 const ExpenseTracker = () => {
   const [expenses, setExpenses] = useState<{ amount: string; category: string; date: string; }[]>([]);
 
-
   useEffect(() => {
     setExpenses([
       { amount: '10,00', category: 'Alimentation', date: '01/10/2023' },

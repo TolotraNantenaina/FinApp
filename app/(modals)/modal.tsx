@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useGlobalSearchParams } from 'expo-router';
 import { Picker } from '@react-native-picker/picker'; // Importer Picker depuis le bon module
 
 export default function ModalScreen() {
@@ -9,6 +10,13 @@ export default function ModalScreen() {
   const [date, setDate] = useState('');
   const [transactionType, setTransactionType] = useState('');
   const [description, setDescription] = useState('');
+
+  const { type } = useGlobalSearchParams();
+  useEffect(() => {
+    if (type && (type=== 'credit'|| type=== 'debit')) {
+      setTransactionType(type);
+    }
+  });
 
   return (
     <View style={styles.container}>
@@ -62,13 +70,17 @@ export default function ModalScreen() {
       <View style={styles.formGroup}>
         <Text style={styles.label}>Type de Transaction</Text>
         <View style={styles.row}>
-          <TouchableOpacity onPress={() => setTransactionType('credit')} style={styles.radioOption}>
+          <TouchableOpacity disabled ={type!==undefined && type!== null && type!==''}
+            onPress={() => setTransactionType('credit')}
+            style={[styles.radioOption, { opacity : (type!==undefined && type!== null && type!=='') ? 0.5 : 1}]}>
             <Text>Crédit</Text>
             <View style={styles.radioCircle}>
               {transactionType === 'credit' && <View style={styles.selectedCircle} />}
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTransactionType('debit')} style={styles.radioOption}>
+          <TouchableOpacity disabled ={type!==undefined && type!== null && type!==''}
+            onPress={() => setTransactionType('debit')} 
+            style={[styles.radioOption, { opacity : (type!==undefined && type!== null && type!=='') ? 0.5 : 1}]}>
             <Text>Débit</Text>
             <View style={styles.radioCircle}>
               {transactionType === 'debit' && <View style={styles.selectedCircle} />}
