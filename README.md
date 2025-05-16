@@ -84,4 +84,4 @@ src/
 
 ## License
 
-MIT License - Feel free to use this project for personal or commercial purposes.
+Aucune licence spécifiée - Veuillez noter que l'utilisation de ce projet pour des fins personnelles ou commerciales n'est pas autorisée sans une licence appropriée.
