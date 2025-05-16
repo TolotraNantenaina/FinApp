@@ -49,6 +49,10 @@ export const CategoryPieChart = () => {
             backgroundGradientFrom: '#fff',
             backgroundGradientTo: '#fff',
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            propsForLabels: {
+              fontFamily: 'Arial', // Ajout de la police de texte
+            },
           }}
           accessor="population"
           backgroundColor="transparent"
