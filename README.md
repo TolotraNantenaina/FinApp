@@ -68,12 +68,12 @@ npm run dev
 
 ```
 src/
-├── components/    # Reusable UI components
-├── hooks/         # Main application views
-├── lib/           # Utility functions and configurations
-├── store/         # Utility functions and configurations
-├── assets/        # Static resources
-└── types/        # Static resources
+├── components/    # Composants UI réutilisables
+├── hooks/         # Hooks personnalisés
+├── lib/           # Fonctions utilitaires et configurations
+├── store/         # Gestion de l'état de l'application
+├── assets/        # Ressources statiques
+└── types/         # Définition des types TypeScript
 ```
 
 ## Contributing
