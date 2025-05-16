@@ -39,7 +39,7 @@ const generateId = () => Math.random().toString(36).substring(2, 15);
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set:any, get) => ({
       transactions: [],
       categories: [
         { id: 'food', name: 'Food & Drinks', icon: 'utensils', color: '#FF9F1C' },
@@ -55,27 +55,27 @@ export const useAppStore = create<AppState>()(
       initialBalance: 0,
       
       // Transactions methods
-      addTransaction: (transaction) => {
+      addTransaction: (transaction:any) => {
         const newTransaction = {
           ...transaction,
           id: generateId(),
         };
-        set((state) => ({
+        set((state:any) => ({
           transactions: [...state.transactions, newTransaction],
         }));
       },
       
       updateTransaction: (id, transaction) => {
-        set((state) => ({
-          transactions: state.transactions.map((t) =>
+        set((state:any) => ({
+          transactions: state.transactions.map((t:any) =>
             t.id === id ? { ...t, ...transaction } : t
           ),
         }));
       },
       
-      deleteTransaction: (id) => {
-        set((state) => ({
-          transactions: state.transactions.filter((t) => t.id !== id),
+      deleteTransaction: (id:any) => {
+        set((state:any) => ({
+          transactions: state.transactions.filter((t:any) => t.id !== id),
         }));
       },
       
@@ -87,27 +87,27 @@ export const useAppStore = create<AppState>()(
       },
       
       // Categories methods
-      addCategory: (category) => {
+      addCategory: (category:any) => {
         const newCategory = {
           ...category,
           id: generateId(),
         };
-        set((state) => ({
+        set((state:any) => ({
           categories: [...state.categories, newCategory],
         }));
       },
       
       updateCategory: (id, category) => {
-        set((state) => ({
-          categories: state.categories.map((c) =>
+        set((state:any) => ({
+          categories: state.categories.map((c:any) =>
             c.id === id ? { ...c, ...category } : c
           ),
         }));
       },
       
       deleteCategory: (id) => {
-        set((state) => ({
-          categories: state.categories.filter((c) => c.id !== id),
+        set((state:any) => ({
+          categories: state.categories.filter((c:any) => c.id !== id),
         }));
       },
       
@@ -117,22 +117,22 @@ export const useAppStore = create<AppState>()(
           ...budget,
           id: generateId(),
         };
-        set((state) => ({
+        set((state:any) => ({
           budgets: [...state.budgets, newBudget],
         }));
       },
       
       updateBudget: (id, budget) => {
-        set((state) => ({
-          budgets: state.budgets.map((b) =>
+        set((state:any) => ({
+          budgets: state.budgets.map((b:any) =>
             b.id === id ? { ...b, ...budget } : b
           ),
         }));
       },
       
       deleteBudget: (id) => {
-        set((state) => ({
-          budgets: state.budgets.filter((b) => b.id !== id),
+        set((state:any) => ({
+          budgets: state.budgets.filter((b:any) => b.id !== id),
         }));
       },
       

@@ -1,4 +1,4 @@
-import React from 'react';
+import  * as React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { format } from 'date-fns';
 import { Transaction, Category } from '@/types';
@@ -56,7 +56,7 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
   };
   
   const getCategoryById = (categoryId: string) => {
-    return categories.find(category => category.id === categoryId);
+    return categories.find((category:any) => category.id === categoryId);
   };
   
   if (transactions.length === 0) {
@@ -79,7 +79,7 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Recent Transactions</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('transactions')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Transactions')}>
           <Text style={styles.viewAll}>View All</Text>
         </TouchableOpacity>
       </View>

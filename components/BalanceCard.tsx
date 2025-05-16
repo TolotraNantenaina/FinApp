@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';

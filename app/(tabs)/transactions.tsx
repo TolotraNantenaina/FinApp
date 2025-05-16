@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format } from 'date-fns';
@@ -7,7 +7,6 @@ import { Search, Filter, ArrowUpRight, ArrowDownLeft } from 'lucide-react-native
 import { useAppStore } from '@/store/appStore';
 import { Transaction, Category, TransactionType } from '@/types';
 import { AddTransactionButton } from '@/components/AddTransactionButton';
-import { TransactionForm } from '@/components/TransactionForm';
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -51,8 +50,6 @@ export default function TransactionsScreen() {
   const { transactions, categories } = useAppStore();
   const [activeFilter, setActiveFilter] = useState<TransactionType | 'all'>('all');
   
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-
   // Sort transactions by date, most recent first
   const sortedTransactions = [...transactions]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -100,18 +97,6 @@ export default function TransactionsScreen() {
       category={getCategoryById(item.categoryId)}
     />
   );
-
-  const handleAddTransaction = () => {
-    setIsAddModalVisible(true);
-  };
-  
-  const handleTransactionSubmit = () => {
-    setIsAddModalVisible(false);
-  };
-  
-  const handleCancel = () => {
-    setIsAddModalVisible(false);
-  };
   
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -211,21 +196,7 @@ export default function TransactionsScreen() {
         />
       )}
       
-      <AddTransactionButton onPress={handleAddTransaction} />
-
-      <Modal
-        visible={isAddModalVisible}
-        animationType="slide"
-        presentationStyle="pageSheet"
-      >
-        <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Add Transaction</Text>
-          <TransactionForm 
-            onSubmit={handleTransactionSubmit}
-            onCancel={handleCancel}
-          />
-        </SafeAreaView>
-      </Modal>
+      <AddTransactionButton onPress={() => {}} />
     </SafeAreaView>
   );
 }
@@ -378,18 +349,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#737373',
     textAlign: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#262626',
-    textAlign: 'center',
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f5f5f5',
   },
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import  * as React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { useAppStore } from '@/store/appStore';
@@ -13,8 +13,8 @@ export const CategoryPieChart = () => {
   
   const categorySpending = getCategorySpending(currentMonth, currentYear);
   
-  const chartData = categorySpending.map(item => {
-    const category = categories.find(c => c.id === item.categoryId);
+  const chartData = categorySpending.map((item:any) => {
+    const category = categories.find((c:any) => c.id === item.categoryId);
     return {
       name: category?.name || 'Unknown',
       population: item.amount,
@@ -49,10 +49,6 @@ export const CategoryPieChart = () => {
             backgroundGradientFrom: '#fff',
             backgroundGradientTo: '#fff',
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            propsForLabels: {
-              fontFamily: 'Arial', // Ajout de la police de texte
-            },
           }}
           accessor="population"
           backgroundColor="transparent"
