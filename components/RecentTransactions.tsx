@@ -79,7 +79,7 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Recent Transactions</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Transactions')}>
+        <TouchableOpacity onPress={() => navigation.navigate('transactions')}>
           <Text style={styles.viewAll}>View All</Text>
         </TouchableOpacity>
       </View>
