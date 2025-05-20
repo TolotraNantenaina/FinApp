@@ -1,23 +1,23 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Modal, Pressable } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme, ThemeMode } from '@/store/themeStore';
 
-const languages = [
-  { code: 'fr', name: 'Français', flag: '🇫🇷', acronym: 'FR' },
-  { code: 'en', name: 'English', flag: '🇬🇧', acronym: 'EN' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪', acronym: 'DE' },
-  { code: 'es', name: 'Español', flag: '🇪🇸', acronym: 'ES' },
-  { code: 'mg', name: 'Malagasy', flag: '🇲🇬', acronym: 'MG' },
+const themes = [
+  { mode: 'light' as ThemeMode, name: 'Light', icon: 'sunny-outline' as const },
+  { mode: 'dark' as ThemeMode, name: 'Dark', icon: 'moon-outline' as const },
+  { mode: 'system' as ThemeMode, name: 'System', icon: 'phone-portrait-outline' as const },
 ];
 
-export function LanguageSelector() {
-  const { i18n } = useTranslation();
+export function getCurrentTheme() {
   const { mode, setMode, colors } = useTheme();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const currentTheme = themes.find(t => t.mode === mode) || themes[0];
+  return { mode, setMode, colors, currentTheme };
+}
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+export function ThemeSelector() {
+  const { mode, setMode, colors, currentTheme } = getCurrentTheme();
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <View style={styles.container}>
@@ -25,14 +25,14 @@ export function LanguageSelector() {
         style={[styles.button, { backgroundColor: colors.card }]}
         onPress={() => setIsOpen(true)}
       >
-        <Text style={[styles.buttonText, { color: colors.text }]}>
-          {currentLanguage.flag} {currentLanguage.acronym}
-        </Text>
         <Ionicons
-          name="chevron-down"
+          name={currentTheme.icon}
           size={20}
           color={colors.text}
         />
+        <Text style={[styles.buttonText, { color: colors.text }]}>
+          {currentTheme.name}
+        </Text>
       </TouchableOpacity>
 
       <Modal
@@ -46,21 +46,27 @@ export function LanguageSelector() {
           onPress={() => setIsOpen(false)}
         >
           <View style={[styles.modalContent, { backgroundColor: colors.modal.background }]}>
-            {languages.map((lang) => (
+            {themes.map((theme) => (
               <TouchableOpacity
-                key={lang.code}
+                key={theme.mode}
                 style={[
                   styles.option,
                   { borderBottomColor: colors.border },
-                  i18n.language === lang.code && { backgroundColor: colors.button.secondary }/*styles.selectedOption*/
+                  mode === theme.mode && { backgroundColor: colors.button.secondary }
                 ]}
                 onPress={() => {
-                  i18n.changeLanguage(lang.code);
+                  setMode(theme.mode);
                   setIsOpen(false);
                 }}
               >
+                <Ionicons
+                  name={theme.icon}
+                  size={20}
+                  color={colors.text}
+                  style={styles.optionIcon}
+                />
                 <Text style={[styles.optionText, { color: colors.text }]}>
-                  {lang.flag} {lang.name} ({lang.acronym})
+                  {theme.name}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -78,44 +84,35 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
     padding: 8,
     borderRadius: 8,
     elevation: 5,
   },
   buttonText: {
-    marginRight: 8,
+    marginLeft: 8,
     fontSize: 14,
     fontWeight: '500',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   modalContent: {
-    backgroundColor: '#fff',
     borderRadius: 8,
     padding: 16,
     width: '80%',
     maxWidth: 300,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
     elevation: 5,
   },
   option: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
-  selectedOption: {
-    backgroundColor: '#f0f0f0',
+  optionIcon: {
+    marginRight: 12,
   },
   optionText: {
     fontSize: 16,

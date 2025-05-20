@@ -8,6 +8,11 @@ interface AppState {
   categories: Category[];
   budgets: Budget[];
   initialBalance: number;
+  currency: {
+    code: string;
+    symbol: string;
+    locale: string;
+  };
   
   // Transactions methods
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
@@ -32,7 +37,18 @@ interface AppState {
   // Stats methods
   getMonthlyTotals: (month: number, year: number) => { income: number; expense: number; balance: number };
   getCategorySpending: (month: number, year: number) => { categoryId: string; amount: number }[];
+
+  // Currency methods
+  setCurrency: (currency: { code: string; symbol: string; locale: string }) => void;
+  formatAmount: (amount: number) => string;
 }
+
+const currencies = {
+  EUR: { code: 'EUR', symbol: '€', locale: 'fr-FR' },
+  USD: { code: 'USD', symbol: '$', locale: 'en-US' },
+  GBP: { code: 'GBP', symbol: '£', locale: 'en-GB' },
+  MGA: { code: 'MGA', symbol: 'Ar', locale: 'mg-MG' },
+};
 
 // Helper to generate a simple UUID
 const generateId = () => Math.random().toString(36).substring(2, 15);
@@ -53,6 +69,7 @@ export const useAppStore = create<AppState>()(
       ],
       budgets: [],
       initialBalance: 0,
+      currency: currencies.EUR,
       
       // Transactions methods
       addTransaction: (transaction:any) => {
@@ -188,6 +205,21 @@ export const useAppStore = create<AppState>()(
           categoryId,
           amount,
         }));
+      },
+
+      // Currency methods
+      setCurrency: (currency) => {
+        set({ currency });
+      },
+
+      formatAmount: (amount) => {
+        const { currency } = get();
+        return new Intl.NumberFormat(currency.locale, {
+          style: 'currency',
+          currency: currency.code,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(amount);
       },
     }),
     {

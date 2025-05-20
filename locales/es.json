@@ -40,6 +40,12 @@
     "month": "Tendencia de 6 meses"
   },
   "setting": {
-    "settings": "Ajustes"
+    "settings": "Ajustes",
+    "account": "Account",
+    "profile": "Profile",
+    "managetext": "Manage your personal information",
+    "preferences": "Preferences",
+    "financial": "Financial",
+    "support": "Support"
   }
 } 
