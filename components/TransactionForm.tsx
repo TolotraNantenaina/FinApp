@@ -97,9 +97,13 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
             <Text style={styles.currencySymbol}>€</Text>
             <TextInput
               style={styles.amountInput}
-              keyboardType="numeric"
+              keyboardType="default"
               value={amount}
-              onChangeText={setAmount}
+              onChangeText={(text) => {
+                // On autorise uniquement les chiffres et le point
+                const numericText = text.replace(/[^0-9.]/g, '');
+                setAmount(numericText);
+              }}
               placeholder="0.00"
               placeholderTextColor="#a3a3a3"
             />
