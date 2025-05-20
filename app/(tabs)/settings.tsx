@@ -24,7 +24,7 @@ import { Ionicons } from '@expo/vector-icons';
 export default function SettingsScreen() {
   const { t } = useTranslation();
 
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { setInitialBalance, initialBalance } = useAppStore();
   const { mode, setMode, currentTheme }  = getCurrentTheme();
 
@@ -54,7 +54,7 @@ export default function SettingsScreen() {
   
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
-      <StatusBar style="dark" />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
       <ScrollView>
         <View style={styles.header}>
           <Text style={[styles.titleText, { color: colors.titleText }]}>{t('setting.settings')}</Text>
@@ -69,7 +69,7 @@ export default function SettingsScreen() {
             </View>
             <View style={styles.settingContent}>
               <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.profile')}</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.managetext')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.profiledesc')}</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
@@ -79,8 +79,8 @@ export default function SettingsScreen() {
               <CreditCard size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Payment Methods</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Add or remove payment methods</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.theme')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.themedesc')}</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
@@ -98,8 +98,8 @@ export default function SettingsScreen() {
             />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Theme</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Choose the theme that suits you</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.theme')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.themedesc')}</Text>
             </View>
             <View style={{zIndex: 1002}}>
               <ThemeSelector />
@@ -127,8 +127,8 @@ export default function SettingsScreen() {
               <Ionicons name="language-outline" size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Language</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Select the language you want to use</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.language')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.languagedesc')}</Text>
             </View>
             <View style={{zIndex: 1001}}>
               <LanguageSelector/>
@@ -140,8 +140,8 @@ export default function SettingsScreen() {
               <Ionicons name="cash-outline" size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Currency</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Select the Currency you want to use</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.currency')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.currencydesc')}</Text>
             </View>
             <View style={{zIndex: 1000}}  >
               <CurrencySelector/>
@@ -157,7 +157,7 @@ export default function SettingsScreen() {
               <CreditCard size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Initial Balance</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.init')}</Text>
               <View style={styles.balanceInputContainer}>
                 <TextInput
                   style={[styles.balanceInput, { borderColor: colors.border, color: colors.input.text }]}
@@ -170,7 +170,7 @@ export default function SettingsScreen() {
                   style={[styles.updateButton, { backgroundColor: colors.primary }]}
                   onPress={handleBalanceChange}
                 >
-                  <Text style={[styles.updateButtonText]}>Update</Text>
+                  <Text style={[styles.updateButtonText]}>{t('setting.update')}</Text>
                 </Pressable>
               </View>
             </View>
@@ -185,8 +185,8 @@ export default function SettingsScreen() {
               <HelpCircle size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Help Center</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Get help and contact support</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.help')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.helpdesc')}</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
@@ -194,7 +194,7 @@ export default function SettingsScreen() {
         
         <Pressable style={[styles.logoutButton, {backgroundColor : colors.error}]}>
           <LogOut size={20} color="#dc2626" />
-          <Text style={[styles.logoutText, { color: colors.button.text }]}>Log Out</Text>
+          <Text style={[styles.logoutText, { color: colors.button.text }]}>{t('setting.log-out')}</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>

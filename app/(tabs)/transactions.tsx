@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Pressable, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, Modal, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format } from 'date-fns';
@@ -10,15 +10,19 @@ import { AddTransactionButton } from '@/components/AddTransactionButton';
 import { TransactionForm } from '@/components/TransactionForm';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { useTheme } from '@/store/themeStore';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface TransactionItemProps {
   transaction: Transaction;
   category: Category | undefined;
+  colors: any;
 }
 
-const TransactionItem = ({ transaction, category }: TransactionItemProps) => {
+const TransactionItem = ({ transaction, category, colors }: TransactionItemProps) => {
+
   return (
-    <Pressable style={styles.transactionItem}>
+    <Pressable style={[styles.transactionItem, { backgroundColor:  colors.card, borderBottomColor: colors.border }]}>
       <View style={[styles.iconContainer, { backgroundColor: category?.color || '#e5e5e5' }]}>
         {transaction.type === 'income' ? (
           <ArrowUpRight color="#fff" size={18} />
@@ -28,12 +32,12 @@ const TransactionItem = ({ transaction, category }: TransactionItemProps) => {
       </View>
       
       <View style={styles.transactionInfo}>
-        <Text style={styles.transactionName}>{category?.name || 'Uncategorized'}</Text>
-        <Text style={styles.transactionDate}>
+        <Text style={[styles.transactionName, { color: colors.text }]}>{category?.name || 'Uncategorized'}</Text>
+        <Text style={[styles.transactionDate, { color: colors.settingDescription}]}>
           {format(new Date(transaction.date), 'dd MMM yyyy')}
         </Text>
         {transaction.description && (
-          <Text style={styles.transactionDescription} numberOfLines={1}>
+          <Text style={[styles.transactionDescription, { color: colors.titleText }]} numberOfLines={1}>
             {transaction.description}
           </Text>
         )}
@@ -52,8 +56,12 @@ const TransactionItem = ({ transaction, category }: TransactionItemProps) => {
 export default function TransactionsScreen() {
   const { t } = useTranslation();
 
+  const { colors, isDark } = useTheme();
+
   const { transactions, categories } = useAppStore();
   const [activeFilter, setActiveFilter] = useState<TransactionType | 'all'>('all');
+
+  const [SearchText, setSearchText] = useState('');
   
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
 
@@ -90,8 +98,8 @@ export default function TransactionsScreen() {
   const renderSectionHeader = (date: string) => {
     const transactionDate = new Date(date);
     return (
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionHeaderText}>
+      <View style={[styles.sectionHeader, { backgroundColor: colors.background }]}>
+        <Text style={[styles.sectionHeaderText, { color: colors.textSecondary }]}>
           {format(transactionDate, 'EEEE, MMMM d, yyyy')}
         </Text>
       </View>
@@ -102,8 +110,15 @@ export default function TransactionsScreen() {
     <TransactionItem 
       transaction={item}
       category={getCategoryById(item.categoryId)}
+      colors={colors}
     />
   );
+
+  const handleSearchChange = () => {
+    
+    console.log('Search text => "', SearchText ,'".');
+    
+  };
 
   const handleAddTransaction = () => {
     setIsAddModalVisible(true);
@@ -118,24 +133,32 @@ export default function TransactionsScreen() {
   };
   
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.b_background }]} edges={['top']}>
+      <StatusBar style={isDark ? "dark" : "light"} />
       
       <View style={styles.header}>
-        <Text style={styles.titleText}>{t('transaction.transactions')}</Text>
+        <Text style={[styles.titleText, { color: colors.titleText }]}>{t('transaction.transactions')}</Text>
         
         <View style={styles.searchContainer}>
-          <View style={styles.searchInputContainer}>
-            <Search size={20} color="#737373" />
-            <Text style={styles.searchPlaceholder}>{t('transaction.search')}</Text>
+          <View style={[styles.searchInputContainer, { backgroundColor: colors.input.background }]}>
+            <Search size={20} color={colors.input.placeholder} />
+            <TextInput
+              style={styles.searchInput}
+              placeholder={t('transaction.search')}
+              value={SearchText}
+              onChangeText={setSearchText}
+              keyboardType="numeric"/>
           </View>
           
-          <Pressable style={styles.filterButton}>
-            <Filter size={20} color="#525252" />
+          <Pressable
+            style={[styles.filterButton, { backgroundColor: colors.button.secondary }]}
+            onPress={handleSearchChange}
+            >
+            <Filter size={20} color={colors.button.textSecondary} />
           </Pressable>
         </View>
         
-        <View style={styles.filterContainer}>
+        <View style={[styles.filterContainer, { backgroundColor: colors.card }]}>
           <Pressable 
             style={[
               styles.filterTab,
@@ -145,6 +168,7 @@ export default function TransactionsScreen() {
           >
             <Text style={[
               styles.filterTabText,
+              { color: colors.settingDescription },
               activeFilter === 'all' && styles.activeFilterText,
             ]}>
               {t('transaction.all')}
@@ -160,6 +184,7 @@ export default function TransactionsScreen() {
           >
             <Text style={[
               styles.filterTabText,
+              { color: colors.settingDescription },
               activeFilter === 'expense' && styles.activeFilterText,
             ]}>
               {t('balance.expense')}
@@ -175,6 +200,7 @@ export default function TransactionsScreen() {
           >
             <Text style={[
               styles.filterTabText,
+              { color: colors.settingDescription },
               activeFilter === 'income' && styles.activeFilterText,
             ]}>
               {t('balance.income')}
@@ -184,16 +210,16 @@ export default function TransactionsScreen() {
       </View>
       
       {transactions.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyTitle}>No transactions yet</Text>
-          <Text style={styles.emptyText}>
+        <View style={[styles.emptyContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.emptyTitle, { color: colors.sectionTitle }]}>No transactions yet</Text>
+          <Text style={[styles.emptyText, { color: colors.settingDescription }]}>
             Add your first transaction by tapping the + button below
           </Text>
         </View>
       ) : filteredTransactions.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyTitle}>No {activeFilter} transactions</Text>
-          <Text style={styles.emptyText}>
+        <View style={[styles.emptyContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.emptyTitle, { color: colors.sectionTitle }]}>No {activeFilter} transactions</Text>
+          <Text style={[styles.emptyText, { color: colors.settingDescription }]}>
             Try changing the filter or add a new transaction
           </Text>
         </View>
@@ -222,8 +248,8 @@ export default function TransactionsScreen() {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Add Transaction</Text>
+        <SafeAreaView style={[styles.modalContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.modalTitle, { color: colors.titleText, borderBottomColor: colors.border }]}>{t('home.add')}</Text>
           <TransactionForm 
             onSubmit={handleTransactionSubmit}
             onCancel={handleCancel}
@@ -269,20 +295,23 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
   },
-  searchPlaceholder: {
+  searchInput: {
     marginLeft: 8,
     color: '#a3a3a3',
     fontSize: 16,
+    width: '100%',
+    height: 27,
   },
   filterButton: {
     backgroundColor: '#fff',
     borderRadius: 8,
-    padding: 10,
+    padding: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
+    height: 44,
   },
   filterContainer: {
     flexDirection: 'row',

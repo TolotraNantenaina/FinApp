@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppStore } from '@/store/appStore';
 import { useTheme, ThemeMode } from '@/store/themeStore';
@@ -20,7 +20,7 @@ export function CurrencySelector() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <Pressable
         style={[styles.button, { backgroundColor: colors.card }]}
         onPress={() => setIsOpen(true)}
       >
@@ -32,7 +32,7 @@ export function CurrencySelector() {
           size={20}
           color={colors.text}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       <Modal
         visible={isOpen}
@@ -46,7 +46,7 @@ export function CurrencySelector() {
         >
           <View style={[styles.modalContent, { backgroundColor: colors.modal.background }]}>
             {Object.values(currencies).map((curr) => (
-              <TouchableOpacity
+              <Pressable
                 key={curr.code}
                 style={[
                   styles.option,
@@ -61,7 +61,7 @@ export function CurrencySelector() {
                 <Text style={[styles.optionText, { color: colors.text }]}>
                   {curr.symbol} {curr.name} ({curr.code})
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </Pressable>

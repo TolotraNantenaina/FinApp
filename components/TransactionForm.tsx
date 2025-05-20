@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { useAppStore } from '@/store/appStore';
 import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react-native';
 import { TransactionType } from '@/types';
+import { useTheme } from '@/store/themeStore';
 
 interface TransactionFormProps {
   onSubmit: () => void;
@@ -21,6 +22,7 @@ interface TransactionFormProps {
 }
 
 export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) => {
+  const { colors, isDark } = useTheme();
   const { addTransaction, categories, formatAmount } = useAppStore();
   
   const [amount, setAmount] = useState('');
@@ -29,7 +31,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
   const [categoryId, setCategoryId] = useState(categories[0]?.id || '');
   
   const handleSubmit = () => {
-    if (!amount || parseFloat(amount) <= 0) {
+    if (!amount || parseFloat(amount) <= 0 || isNaN(parseFloat(amount))) {
       // Handle validation error
       return;
     }
@@ -48,7 +50,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: colors.card }]}
     >
       <ScrollView>
         <View style={styles.typeSelector}>
@@ -92,21 +94,25 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
         </View>
         
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Amount</Text>
-          <View style={styles.amountContainer}>
-            <Text style={styles.currencySymbol}>{formatAmount(0).replace(/[\d,.]/g, '')}</Text>
+          <Text style={[styles.label, { color: colors.sectionTitle }]}>Amount</Text>
+          <View style={[styles.amountContainer, { borderColor: colors.border }]}>
+            <Text style={[styles.currencySymbol, { color: colors.input.text }]}>{formatAmount(0).replace(/[\d,.]/g, '')}</Text>
             <TextInput
-              style={styles.amountInput}
-              keyboardType="numeric"
+              style={[styles.amountInput, { color: colors.input.text }]}
+              keyboardType="default"
               value={amount}
-              onChangeText={setAmount}
+              onChangeText={(text) => {
+                // On autorise uniquement les chiffres et le point
+                const numericText = text.replace(/[^0-9.]/g, '');
+                setAmount(numericText);
+              }}
               placeholder="0.00"
             />
           </View>
         </View>
         
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Category</Text>
+          <Text style={[styles.label, { color: colors.sectionTitle }]}>Category</Text>
           <ScrollView 
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -117,12 +123,14 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
                 key={category.id}
                 style={[
                   styles.categoryButton,
+                  { backgroundColor: colors.background, borderColor: colors.border },
                   categoryId === category.id && { backgroundColor: category.color + '20', borderColor: category.color },
                 ]}
                 onPress={() => setCategoryId(category.id)}
               >
                 <Text style={[
                   styles.categoryButtonText,
+                  { color: colors.settingDescription },
                   categoryId === category.id && { color: category.color }
                 ]}>
                   {category.name}
@@ -133,9 +141,9 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
         </View>
         
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Description (Optional)</Text>
+          <Text style={[styles.label, { color: colors.sectionTitle }]}>Description (Optional)</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { color: colors.input.text, borderColor: colors.border }]}
             value={description}
             onChangeText={setDescription}
             placeholder="Add a note"
@@ -145,12 +153,12 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
         </View>
         
         <View style={styles.formGroup}>
-          <Text style={styles.label}>Date</Text>
-          <Text style={styles.dateText}>{format(new Date(), 'EEEE, MMMM d, yyyy')}</Text>
+          <Text style={[styles.label, { color: colors.sectionTitle }]}>Date</Text>
+          <Text style={[styles.dateText, { color: colors.titleText, borderColor: colors.border }]}>{format(new Date(), 'EEEE, MMMM d, yyyy')}</Text>
         </View>
       </ScrollView>
 
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <Pressable style={styles.cancelButton} onPress={onCancel}>
           <Text style={styles.cancelButtonText}>Cancel</Text>
         </Pressable>
@@ -238,7 +246,8 @@ const styles = StyleSheet.create({
   },
   categoryButton: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingTop: 7,
+    paddingBottom: 9,
     borderRadius: 20,
     marginRight: 12,
     borderWidth: 1,
