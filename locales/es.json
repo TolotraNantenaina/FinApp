@@ -1,0 +1,45 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "settings": "Configuración",
+    "language": "Idioma"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña"
+  },
+  "menu" : {
+    "home": "Bienvenido",
+    "statistics": "Estadística",
+    "transactions": "Transacciones",
+    "settings": "Ajustes"
+  },
+  "home": {
+    "welcome" : "Hola",
+    "headText": "Resumen Financiero",
+    "category": "Gasto por Categoria",
+    "transaction": "Transacciones Recientes",
+    "all" : "Ver Todo",
+    "add" : "Agregar transacción"
+  },
+  "balance": {
+    "balance": "Saldo actual",
+    "income": "Ingresos",
+    "expense": "Desembolso"
+  },
+  "transaction": {
+    "transactions": "Transacciones",
+    "search": "Búsqueda de transacciones",
+    "all" : "Todo"
+  },
+  "statistic": {
+    "statistics": "Estadística",
+    "balance": "Saldo",
+    "month": "Tendencia de 6 meses"
+  },
+  "setting": {
+    "settings": "Ajustes"
+  }
+} 

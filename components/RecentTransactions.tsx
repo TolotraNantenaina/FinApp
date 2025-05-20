@@ -1,9 +1,11 @@
 import  * as React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import { format } from 'date-fns';
 import { Transaction, Category } from '@/types';
 import { useAppStore } from '@/store/appStore';
 import { ArrowUpRight, ArrowDownLeft } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+import '../i18n';
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -13,7 +15,7 @@ interface TransactionItemProps {
 
 const TransactionItem = ({ transaction, category, onPress }: TransactionItemProps) => {
   return (
-    <TouchableOpacity 
+    <Pressable 
       style={styles.transactionItem}
       onPress={() => onPress(transaction)}
     >
@@ -36,9 +38,9 @@ const TransactionItem = ({ transaction, category, onPress }: TransactionItemProp
         styles.transactionAmount,
         { color: transaction.type === 'income' ? '#16a34a' : '#dc2626' }
       ]}>
-        {transaction.type === 'income' ? '+' : '-'}€{transaction.amount.toFixed(2)}
+        {transaction.type === 'income' ? '+' : '-'}€{transaction.amount ? transaction.amount.toFixed(2) : Number('0').toFixed(2)}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -59,11 +61,13 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
     return categories.find((category:any) => category.id === categoryId);
   };
   
+  const { t } = useTranslation();
+
   if (transactions.length === 0) {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Recent Transactions</Text>
+          <Text style={styles.title}>{t('home.transaction')}</Text>
         </View>
         <View style={styles.emptyState}>
           <Text style={styles.emptyStateText}>No transactions yet</Text>
@@ -78,10 +82,10 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Recent Transactions</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('transactions')}>
-          <Text style={styles.viewAll}>View All</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>{t('home.transaction')}</Text>
+        <Pressable onPress={() => navigation.navigate('transactions')}>
+          <Text style={styles.viewAll}>{t('home.all')}</Text>
+        </Pressable>
       </View>
       
       <FlatList

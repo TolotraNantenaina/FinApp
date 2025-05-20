@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format, subMonths, addMonths } from 'date-fns';
@@ -7,10 +7,14 @@ import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import '../../i18n';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function StatisticsScreen() {
+  const { t } = useTranslation();
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const { getMonthlyTotals, getCategorySpending, categories } = useAppStore();
   
@@ -88,21 +92,21 @@ export default function StatisticsScreen() {
       <StatusBar style="dark" />
       
       <View style={styles.header}>
-        <Text style={styles.titleText}>Statistics</Text>
+        <Text style={styles.titleText}>{t('statistics.statistics')}</Text>
         
         <View style={styles.monthSelector}>
-          <TouchableOpacity 
+          <Pressable 
             style={styles.monthButton} 
             onPress={handlePreviousMonth}
           >
             <ChevronLeft size={20} color="#525252" />
-          </TouchableOpacity>
+          </Pressable>
           
           <Text style={styles.monthText}>
             {format(currentDate, 'MMMM yyyy')}
           </Text>
           
-          <TouchableOpacity 
+          <Pressable 
             style={[
               styles.monthButton,
               isCurrentMonth() && styles.disabledButton
@@ -111,14 +115,14 @@ export default function StatisticsScreen() {
             disabled={isCurrentMonth()}
           >
             <ChevronRight size={20} color={isCurrentMonth() ? '#a3a3a3' : '#525252'} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       
       <ScrollView>
         <View style={styles.summaryContainer}>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Income</Text>
+            <Text style={styles.summaryLabel}>{t('balance.income')}</Text>
             <Text style={[styles.summaryValue, styles.incomeValue]}>
               €{income.toFixed(2)}
             </Text>
@@ -127,7 +131,7 @@ export default function StatisticsScreen() {
           <View style={styles.divider} />
           
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Expenses</Text>
+            <Text style={styles.summaryLabel}>{t('balance.expense')}</Text>
             <Text style={[styles.summaryValue, styles.expenseValue]}>
               €{expense.toFixed(2)}
             </Text>
@@ -136,7 +140,7 @@ export default function StatisticsScreen() {
           <View style={styles.divider} />
           
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>Balance</Text>
+            <Text style={styles.summaryLabel}>{t('statistic.balance')}</Text>
             <Text style={[
               styles.summaryValue,
               balance >= 0 ? styles.positiveBalance : styles.negativeBalance
@@ -147,7 +151,7 @@ export default function StatisticsScreen() {
         </View>
         
         <View style={styles.chartContainer}>
-          <Text style={styles.sectionTitle}>6-Month Trend</Text>
+          <Text style={styles.sectionTitle}>{t('statistics.month')}</Text>
           <LineChart
             data={generateMonthsData()}
             width={screenWidth - 32}
@@ -172,7 +176,7 @@ export default function StatisticsScreen() {
         </View>
         
         <View style={styles.categoryContainer}>
-          <Text style={styles.sectionTitle}>Spending by Category</Text>
+          <Text style={styles.sectionTitle}>{t('home.category')}</Text>
           
           {spendingByCategory.length === 0 ? (
             <Text style={styles.emptyText}>No expenses for this month</Text>

@@ -1,0 +1,45 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "settings": "Settings",
+    "language": "Language"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password"
+  },
+  "menu" : {
+    "home": "Home",
+    "statistics": "Statistics",
+    "transactions": "Transactions",
+    "settings": "Settings"
+  },
+  "home": {
+    "welcome" : "Hello there",
+    "headText": "Financial Overview",
+    "category": "Spending by Category",
+    "transaction": "Recent Transactions",
+    "all" : "View All",
+    "add" : "Add Transaction"
+  },
+  "balance": {
+    "balance": "Current Balance",
+    "income": "Income",
+    "expense": "Expense"
+  },
+  "transaction": {
+    "transactions": "Transactions",
+    "search": "Search transactions",
+    "all" : "All"
+  },
+  "statistic": {
+    "statistics": "Statistics",
+    "balance": "Balance",
+    "month": "6-Month Trend"
+  },
+  "setting": {
+    "settings": "Settings"
+  }
+} 

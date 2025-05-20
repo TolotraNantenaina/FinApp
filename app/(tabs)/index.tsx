@@ -8,8 +8,11 @@ import { RecentTransactions } from '@/components/RecentTransactions';
 import { CategoryPieChart } from '@/components/CategoryPieChart';
 import { AddTransactionButton } from '@/components/AddTransactionButton';
 import { TransactionForm } from '@/components/TransactionForm';
+import { useTranslation } from 'react-i18next';
+import '../../i18n';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   
@@ -32,8 +35,8 @@ export default function HomeScreen() {
       <ScrollView>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcomeText}>Hello there,</Text>
-            <Text style={styles.titleText}>Financial Overview</Text>
+            <Text style={styles.welcomeText}>{t('home.welcome')}, </Text>
+            <Text style={styles.titleText}>{t('home.headText')}</Text>
           </View>
         </View>
         
@@ -52,7 +55,7 @@ export default function HomeScreen() {
         presentationStyle="pageSheet"
       >
         <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Add Transaction</Text>
+          <Text style={styles.modalTitle}>{t('home.add')}</Text>
           <TransactionForm 
             onSubmit={handleTransactionSubmit}
             onCancel={handleCancel}
