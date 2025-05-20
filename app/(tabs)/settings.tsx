@@ -14,13 +14,24 @@ import {
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { CurrencySelector } from '@/components/CurrencySelector';
+import { LanguageSelector } from '@/components/LanguageSelector';
+import { ThemeSelector, getCurrentTheme } from '@/components/ThemeSelector';
+import { useTheme } from '@/store/themeStore';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
+
+  const { colors } = useTheme();
   const { setInitialBalance, initialBalance } = useAppStore();
+  const { mode, setMode, currentTheme }  = getCurrentTheme();
+
   const [balanceText, setBalanceText] = useState(initialBalance.toString());
+
   const [isDarkMode, setIsDarkMode] = useState(false);
+
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
   
   const handleBalanceChange = () => {
@@ -42,65 +53,66 @@ export default function SettingsScreen() {
   };
   
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       <StatusBar style="dark" />
       <ScrollView>
         <View style={styles.header}>
-          <Text style={styles.titleText}>{t('setting.settings')}</Text>
+          <Text style={[styles.titleText, { color: colors.titleText }]}>{t('setting.settings')}</Text>
         </View>
         
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Account</Text>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.account')}</Text>
           
-          <Pressable style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <User size={20} color="#525252" />
+          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, , { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <User size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Profile</Text>
-              <Text style={styles.settingDescription}>Manage your personal information</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.profile')}</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.managetext')}</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
           
-          <Pressable style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <CreditCard size={20} color="#525252" />
+          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, , { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <CreditCard size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Payment Methods</Text>
-              <Text style={styles.settingDescription}>Add or remove payment methods</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Payment Methods</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Add or remove payment methods</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
         </View>
         
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Preferences</Text>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.preferences')}</Text>
           
-          <View style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <Moon size={20} color="#525252" />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Dark Mode</Text>
-              <Text style={styles.settingDescription}>Switch to dark theme</Text>
-            </View>
-            <Switch
-              value={isDarkMode}
-              onValueChange={toggleDarkMode}
-              trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
-              thumbColor={'#fff'}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+            <Ionicons
+              name={currentTheme.icon}
+              size={20}
+              color={colors.text}
             />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Theme</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Choose the theme that suits you</Text>
+            </View>
+            <View style={{zIndex: 1002}}>
+              <ThemeSelector />
+            </View>
           </View>
           
-          <View style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <Bell size={20} color="#525252" />
+          {/* <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <Bell size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Notifications</Text>
-              <Text style={styles.settingDescription}>Enable push notifications</Text>
+              <Text style={[styles.settingTitle, { color: colors.text }]}>Notifications</Text>
+              <Text style={[styles.settingDescription, { color: colors.text }]}>Enable push notifications</Text>
             </View>
             <Switch
               value={isNotificationsEnabled}
@@ -108,31 +120,57 @@ export default function SettingsScreen() {
               trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
               thumbColor={'#fff'}
             />
+          </View> */}
+
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <Ionicons name="language-outline" size={20} color={colors.text} />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Language</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Select the language you want to use</Text>
+            </View>
+            <View style={{zIndex: 1001}}>
+              <LanguageSelector/>
+            </View>
+          </View>
+
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <Ionicons name="cash-outline" size={20} color={colors.text} />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Currency</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Select the Currency you want to use</Text>
+            </View>
+            <View style={{zIndex: 1000}}  >
+              <CurrencySelector/>
+            </View>
           </View>
         </View>
         
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Financial</Text>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.financial')}</Text>
           
-          <View style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <CreditCard size={20} color="#525252" />
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <CreditCard size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Initial Balance</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Initial Balance</Text>
               <View style={styles.balanceInputContainer}>
                 <TextInput
-                  style={styles.balanceInput}
+                  style={[styles.balanceInput, { borderColor: colors.border, color: colors.input.text }]}
                   value={balanceText}
                   onChangeText={setBalanceText}
                   keyboardType="numeric"
                   placeholder="0.00"
                 />
                 <Pressable 
-                  style={styles.updateButton}
+                  style={[styles.updateButton, { backgroundColor: colors.primary }]}
                   onPress={handleBalanceChange}
                 >
-                  <Text style={styles.updateButtonText}>Update</Text>
+                  <Text style={[styles.updateButtonText]}>Update</Text>
                 </Pressable>
               </View>
             </View>
@@ -140,23 +178,23 @@ export default function SettingsScreen() {
         </View>
         
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Support</Text>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.support')}</Text>
           
-          <Pressable style={styles.settingItem}>
-            <View style={styles.settingIconContainer}>
-              <HelpCircle size={20} color="#525252" />
+          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
+              <HelpCircle size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
-              <Text style={styles.settingTitle}>Help Center</Text>
-              <Text style={styles.settingDescription}>Get help and contact support</Text>
+              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>Help Center</Text>
+              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>Get help and contact support</Text>
             </View>
             <ChevronRight size={20} color="#a3a3a3" />
           </Pressable>
         </View>
         
-        <Pressable style={styles.logoutButton}>
+        <Pressable style={[styles.logoutButton, {backgroundColor : colors.error}]}>
           <LogOut size={20} color="#dc2626" />
-          <Text style={styles.logoutText}>Log Out</Text>
+          <Text style={[styles.logoutText, { color: colors.button.text }]}>Log Out</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>
@@ -166,7 +204,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
   },
   header: {
     paddingHorizontal: 16,
@@ -263,5 +300,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#dc2626',
+  },
+  settingLabel: {
+    fontSize: 16,
   },
 });

@@ -40,6 +40,12 @@
     "month": "6-Monats-Trend"
   },
   "setting": {
-    "settings": "Paramètres"
+    "settings": "Einstellungen",
+    "account": "Account",
+    "profile": "Profile",
+    "managetext": "Manage your personal information",
+    "preferences": "Preferences",
+    "financial": "Financial",
+    "support": "Support"
   }
 } 

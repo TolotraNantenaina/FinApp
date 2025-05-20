@@ -21,7 +21,7 @@ interface TransactionFormProps {
 }
 
 export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) => {
-  const { addTransaction, categories } = useAppStore();
+  const { addTransaction, categories, formatAmount } = useAppStore();
   
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -94,18 +94,13 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
         <View style={styles.formGroup}>
           <Text style={styles.label}>Amount</Text>
           <View style={styles.amountContainer}>
-            <Text style={styles.currencySymbol}>€</Text>
+            <Text style={styles.currencySymbol}>{formatAmount(0).replace(/[\d,.]/g, '')}</Text>
             <TextInput
               style={styles.amountInput}
-              keyboardType="default"
+              keyboardType="numeric"
               value={amount}
-              onChangeText={(text) => {
-                // On autorise uniquement les chiffres et le point
-                const numericText = text.replace(/[^0-9.]/g, '');
-                setAmount(numericText);
-              }}
+              onChangeText={setAmount}
               placeholder="0.00"
-              placeholderTextColor="#a3a3a3"
             />
           </View>
         </View>

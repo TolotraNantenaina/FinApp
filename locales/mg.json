@@ -40,6 +40,9 @@
     "month": "6-bolana fironana"
   },
   "setting": {
-    "settings": "Safidy"
+    "settings": "Safidy",
+    "account": "Account",
+    "profile": "Profile",
+    "managetext": "Manage your personal information"
   }
 } 

@@ -1,23 +1,22 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Modal, Pressable } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppStore } from '@/store/appStore';
 import { useTheme, ThemeMode } from '@/store/themeStore';
 
-const languages = [
-  { code: 'fr', name: 'Français', flag: '🇫🇷', acronym: 'FR' },
-  { code: 'en', name: 'English', flag: '🇬🇧', acronym: 'EN' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪', acronym: 'DE' },
-  { code: 'es', name: 'Español', flag: '🇪🇸', acronym: 'ES' },
-  { code: 'mg', name: 'Malagasy', flag: '🇲🇬', acronym: 'MG' },
-];
+const currencies = {
+  EUR: { code: 'EUR', symbol: '€', name: 'Euro', locale: 'fr-FR' },
+  USD: { code: 'USD', symbol: '$', name: 'Dollar', locale: 'en-US' },
+  GBP: { code: 'GBP', symbol: '£', name: 'Livre', locale: 'en-GB' },
+  MGA: { code: 'MGA', symbol: 'Ar', name: 'Ariary', locale: 'mg-MG' },
+};
 
-export function LanguageSelector() {
-  const { i18n } = useTranslation();
+export function CurrencySelector() {
   const { mode, setMode, colors } = useTheme();
+  const { currency, setCurrency } = useAppStore();
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+  const currentCurrency = currencies[currency.code as keyof typeof currencies];
 
   return (
     <View style={styles.container}>
@@ -26,7 +25,7 @@ export function LanguageSelector() {
         onPress={() => setIsOpen(true)}
       >
         <Text style={[styles.buttonText, { color: colors.text }]}>
-          {currentLanguage.flag} {currentLanguage.acronym}
+          {currentCurrency.symbol} {currentCurrency.code}
         </Text>
         <Ionicons
           name="chevron-down"
@@ -46,21 +45,21 @@ export function LanguageSelector() {
           onPress={() => setIsOpen(false)}
         >
           <View style={[styles.modalContent, { backgroundColor: colors.modal.background }]}>
-            {languages.map((lang) => (
+            {Object.values(currencies).map((curr) => (
               <TouchableOpacity
-                key={lang.code}
+                key={curr.code}
                 style={[
                   styles.option,
                   { borderBottomColor: colors.border },
-                  i18n.language === lang.code && { backgroundColor: colors.button.secondary }/*styles.selectedOption*/
+                  currency.code === curr.code && { backgroundColor: colors.button.secondary }/*styles.selectedOption*/
                 ]}
                 onPress={() => {
-                  i18n.changeLanguage(lang.code);
+                  setCurrency(curr);
                   setIsOpen(false);
                 }}
               >
                 <Text style={[styles.optionText, { color: colors.text }]}>
-                  {lang.flag} {lang.name} ({lang.acronym})
+                  {curr.symbol} {curr.name} ({curr.code})
                 </Text>
               </TouchableOpacity>
             ))}
