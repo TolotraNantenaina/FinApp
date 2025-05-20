@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme, ThemeMode } from '@/store/themeStore';
@@ -21,7 +21,7 @@ export function LanguageSelector() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <Pressable
         style={[styles.button, { backgroundColor: colors.card }]}
         onPress={() => setIsOpen(true)}
       >
@@ -33,7 +33,7 @@ export function LanguageSelector() {
           size={20}
           color={colors.text}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       <Modal
         visible={isOpen}
@@ -47,7 +47,7 @@ export function LanguageSelector() {
         >
           <View style={[styles.modalContent, { backgroundColor: colors.modal.background }]}>
             {languages.map((lang) => (
-              <TouchableOpacity
+              <Pressable
                 key={lang.code}
                 style={[
                   styles.option,
@@ -62,7 +62,7 @@ export function LanguageSelector() {
                 <Text style={[styles.optionText, { color: colors.text }]}>
                   {lang.flag} {lang.name} ({lang.acronym})
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </Pressable>

@@ -10,9 +10,13 @@ import { AddTransactionButton } from '@/components/AddTransactionButton';
 import { TransactionForm } from '@/components/TransactionForm';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { useTheme } from '@/store/themeStore';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+
+  const { colors, isDark } = useTheme();
+
   const router = useRouter();
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   
@@ -29,14 +33,14 @@ export default function HomeScreen() {
   };
   
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
       
       <ScrollView>
         <View style={styles.header}>
           <View>
-            <Text style={styles.welcomeText}>{t('home.welcome')}, </Text>
-            <Text style={styles.titleText}>{t('home.headText')}</Text>
+            <Text style={[styles.welcomeText, { color: colors.sectionTitle }]}>{t('home.welcome')}, </Text>
+            <Text style={[styles.titleText, { color: colors.titleText }]}>{t('home.headText')}</Text>
           </View>
         </View>
         
@@ -54,8 +58,8 @@ export default function HomeScreen() {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <SafeAreaView style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>{t('home.add')}</Text>
+        <SafeAreaView style={[styles.modalContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.modalTitle, { color: colors.titleText, borderBottomColor: colors.border }]}>{t('home.add')}</Text>
           <TransactionForm 
             onSubmit={handleTransactionSubmit}
             onCancel={handleCancel}

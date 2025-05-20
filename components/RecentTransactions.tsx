@@ -6,17 +6,21 @@ import { useAppStore } from '@/store/appStore';
 import { ArrowUpRight, ArrowDownLeft } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import '../i18n';
+import { useTheme } from '@/store/themeStore';
 
 interface TransactionItemProps {
   transaction: Transaction;
   category: Category | undefined;
   onPress: (transaction: Transaction) => void;
+  formatAmount: (number: number) => string;
 }
 
-const TransactionItem = ({ transaction, category, onPress }: TransactionItemProps) => {
+const TransactionItem = ({ transaction, category, onPress, formatAmount }: TransactionItemProps) => {
+  const { colors } = useTheme();
+
   return (
     <Pressable 
-      style={styles.transactionItem}
+      style={[styles.transactionItem, { borderBottomColor: colors.border }]}
       onPress={() => onPress(transaction)}
     >
       <View style={[styles.iconContainer, { backgroundColor: category?.color || '#e5e5e5' }]}>
@@ -38,14 +42,14 @@ const TransactionItem = ({ transaction, category, onPress }: TransactionItemProp
         styles.transactionAmount,
         { color: transaction.type === 'income' ? '#16a34a' : '#dc2626' }
       ]}>
-        {transaction.type === 'income' ? '+' : '-'}€{transaction.amount ? transaction.amount.toFixed(2) : Number('0').toFixed(2)}
+        {transaction.type === 'income' ? '+' : '-'}{formatAmount(0).replace(/[\d,.]/g, '')}{transaction.amount ? transaction.amount.toFixed(2) : Number('0').toFixed(2)}
       </Text>
     </Pressable>
   );
 };
 
 export const RecentTransactions = ({ navigation }: { navigation: any }) => {
-  const { transactions, categories } = useAppStore();
+  const { transactions, categories, formatAmount } = useAppStore();
   
   // Sort transactions by date, most recent first
   const sortedTransactions = [...transactions]
@@ -63,15 +67,17 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
   
   const { t } = useTranslation();
 
+  const { colors } = useTheme();
+
   if (transactions.length === 0) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: colors.card}]}>
         <View style={styles.header}>
-          <Text style={styles.title}>{t('home.transaction')}</Text>
+          <Text style={[styles.title, { color: colors.titleText}]}>{t('home.transaction')}</Text>
         </View>
         <View style={styles.emptyState}>
-          <Text style={styles.emptyStateText}>No transactions yet</Text>
-          <Text style={styles.emptyStateSubtext}>
+          <Text style={[styles.emptyStateText, { color: colors.sectionTitle}]}>No transactions yet</Text>
+          <Text style={[styles.emptyStateSubtext, { color: colors.settingDescription}]}>
             Add your first transaction by tapping the + button below
           </Text>
         </View>
@@ -80,11 +86,11 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
   }
   
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: colors.card}]}>
       <View style={styles.header}>
-        <Text style={styles.title}>{t('home.transaction')}</Text>
+        <Text style={[styles.title, { color: colors.titleText}]}>{t('home.transaction')}</Text>
         <Pressable onPress={() => navigation.navigate('transactions')}>
-          <Text style={styles.viewAll}>{t('home.all')}</Text>
+          <Text style={[styles.viewAll, { color: colors.settingDescription}]}>{t('home.all')}</Text>
         </Pressable>
       </View>
       
@@ -96,6 +102,7 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
             transaction={item} 
             category={getCategoryById(item.categoryId)}
             onPress={handleTransactionPress}
+            formatAmount={formatAmount}
           />
         )}
         scrollEnabled={false}
@@ -130,8 +137,8 @@ const styles = StyleSheet.create({
     color: '#262626',
   },
   viewAll: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#6366f1',
   },
   transactionItem: {

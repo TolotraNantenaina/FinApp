@@ -4,11 +4,15 @@ import { PieChart } from 'react-native-chart-kit';
 import { useAppStore } from '@/store/appStore';
 import { useTranslation } from 'react-i18next';
 import '../i18n';
+import { useTheme } from '@/store/themeStore';
 
 const screenWidth = Dimensions.get('window').width;
 
 export const CategoryPieChart = () => {
   const { t } = useTranslation();
+
+  const { colors } = useTheme();
+
   const { getCategorySpending, categories } = useAppStore();
   
   const currentMonth = new Date().getMonth();
@@ -30,31 +34,31 @@ export const CategoryPieChart = () => {
   // If no data, show empty state
   if (chartData.length === 0) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{t('home.category')}</Text>
+      <View style={[styles.container, {backgroundColor: colors.card}]}>
+        <Text style={[styles.title, { color: colors.titleText}]}>{t('home.category')}</Text>
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No spending data for this month</Text>
+          <Text style={[styles.emptyText, {color: colors.settingDescription}]}>No spending data for this month</Text>
         </View>
       </View>
     );
   }
   
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t('home.category')}</Text>
+    <View style={[styles.container, {backgroundColor: colors.card}]}>
+      <Text style={[styles.title, { color: colors.titleText}]}>{t('home.category')}</Text>
       <View style={styles.chartContainer}>
         <PieChart
           data={chartData}
           width={screenWidth - 64}
           height={180}
           chartConfig={{
-            backgroundColor: '#fff',
-            backgroundGradientFrom: '#fff',
-            backgroundGradientTo: '#fff',
+            backgroundColor: colors.card/*'#fff'*/,
+            backgroundGradientFrom: colors.card/*'#fff'*/,
+            backgroundGradientTo: colors.card/*'#fff'*/,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             propsForLabels: {
-              fontFamily: 'Arial', // Ajout de la police de texte
+              fontFamily: 'roboto', // Ajout de la police de texte
             },
           }}
           accessor="population"

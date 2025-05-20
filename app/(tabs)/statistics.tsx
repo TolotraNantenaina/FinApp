@@ -9,14 +9,17 @@ import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { useTheme } from '@/store/themeStore';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function StatisticsScreen() {
   const { t } = useTranslation();
 
+  const { colors, isDark } = useTheme();
+
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { getMonthlyTotals, getCategorySpending, categories } = useAppStore();
+  const { formatAmount, getMonthlyTotals, getCategorySpending, categories } = useAppStore();
   
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
@@ -88,13 +91,13 @@ export default function StatisticsScreen() {
   }).sort((a, b) => b.amount - a.amount);
   
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[styles.container, {backgroundColor: colors.background}]} edges={['top']}>
+      <StatusBar style={isDark ? "dark" : "light"} />
       
       <View style={styles.header}>
-        <Text style={styles.titleText}>{t('statistics.statistics')}</Text>
+        <Text style={[styles.titleText, { color: colors.titleText}]}>{t('statistic.statistics')}</Text>
         
-        <View style={styles.monthSelector}>
+        <View style={[styles.monthSelector, { backgroundColor : colors.card }]}>
           <Pressable 
             style={styles.monthButton} 
             onPress={handlePreviousMonth}
@@ -102,7 +105,7 @@ export default function StatisticsScreen() {
             <ChevronLeft size={20} color="#525252" />
           </Pressable>
           
-          <Text style={styles.monthText}>
+          <Text style={[styles.monthText, { color: colors.sectionTitle }]}>
             {format(currentDate, 'MMMM yyyy')}
           </Text>
           
@@ -120,49 +123,49 @@ export default function StatisticsScreen() {
       </View>
       
       <ScrollView>
-        <View style={styles.summaryContainer}>
+        <View style={[styles.summaryContainer, { backgroundColor: colors.card }]}>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>{t('balance.income')}</Text>
+            <Text style={[styles.summaryLabel, { color: colors.settingDescription}]}>{t('balance.income')}</Text>
             <Text style={[styles.summaryValue, styles.incomeValue]}>
-              €{income.toFixed(2)}
+              {formatAmount(0).replace(/[\d,.]/g, '')}{income.toFixed(2)}
             </Text>
           </View>
           
-          <View style={styles.divider} />
+          <View style={[styles.divider, { backgroundColor: colors.border}]} />
           
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>{t('balance.expense')}</Text>
+            <Text style={[styles.summaryLabel, { color: colors.settingDescription}]}>{t('balance.expense')}</Text>
             <Text style={[styles.summaryValue, styles.expenseValue]}>
-              €{expense.toFixed(2)}
+              {formatAmount(0).replace(/[\d,.]/g, '')}{expense.toFixed(2)}
             </Text>
           </View>
           
-          <View style={styles.divider} />
+          <View style={[styles.divider, { backgroundColor: colors.border}]} />
           
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryLabel}>{t('statistic.balance')}</Text>
+            <Text style={[styles.summaryLabel, { color: colors.settingDescription}]}>{t('statistic.balance')}</Text>
             <Text style={[
               styles.summaryValue,
               balance >= 0 ? styles.positiveBalance : styles.negativeBalance
             ]}>
-              €{balance.toFixed(2)}
+              {formatAmount(0).replace(/[\d,.]/g, '')}{balance.toFixed(2)}
             </Text>
           </View>
         </View>
         
-        <View style={styles.chartContainer}>
-          <Text style={styles.sectionTitle}>{t('statistics.month')}</Text>
+        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle}]}>{t('statistic.month')}</Text>
           <LineChart
             data={generateMonthsData()}
             width={screenWidth - 32}
             height={220}
             chartConfig={{
-              backgroundColor: '#fff',
-              backgroundGradientFrom: '#fff',
-              backgroundGradientTo: '#fff',
+              backgroundColor: colors.card/*'#fff'*/,
+              backgroundGradientFrom: colors.card/*'#fff'*/,
+              backgroundGradientTo: colors.card/*'#fff'*/,
               decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              color: (opacity = 1) => colors.text/*`rgba(0, 0, 0, ${opacity})`*/,
+              labelColor: (opacity = 1) => colors.text/*`rgba(0, 0, 0, ${opacity})`*/,
               style: {
                 borderRadius: 16,
               },
@@ -175,11 +178,11 @@ export default function StatisticsScreen() {
           />
         </View>
         
-        <View style={styles.categoryContainer}>
-          <Text style={styles.sectionTitle}>{t('home.category')}</Text>
+        <View style={[styles.categoryContainer, { backgroundColor: colors.card}]}>
+          <Text style={[styles.sectionTitle, { color: colors.sectionTitle}]}>{t('home.category')}</Text>
           
           {spendingByCategory.length === 0 ? (
-            <Text style={styles.emptyText}>No expenses for this month</Text>
+            <Text style={[styles.emptyText, { color: colors.settingDescription}]}>No expenses for this month</Text>
           ) : (
             spendingByCategory.map((category) => (
               <View key={category.id} style={styles.categoryItem}>
@@ -188,12 +191,12 @@ export default function StatisticsScreen() {
                     <View 
                       style={[styles.categoryColor, { backgroundColor: category.color }]} 
                     />
-                    <Text style={styles.categoryName}>{category.name}</Text>
+                    <Text style={[styles.categoryName, { color: colors.sectionTitle }]}>{category.name}</Text>
                   </View>
-                  <Text style={styles.categoryPercentage}>{category.percentage}%</Text>
+                  <Text style={[styles.categoryPercentage, {color: colors.settingDescription}]}>{category.percentage}%</Text>
                 </View>
                 
-                <View style={styles.categoryProgress}>
+                <View style={[styles.categoryProgress, { backgroundColor: colors.background }]}>
                   <View 
                     style={[
                       styles.categoryProgressFill,
@@ -205,7 +208,7 @@ export default function StatisticsScreen() {
                   />
                 </View>
                 
-                <Text style={styles.categoryAmount}>€{category.amount.toFixed(2)}</Text>
+                <Text style={[styles.categoryAmount, { color: colors.settingDescription }]}>{formatAmount(0).replace(/[\d,.]/g, '')}{category.amount.toFixed(2)}</Text>
               </View>
             ))
           )}

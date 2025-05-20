@@ -49,8 +49,10 @@ export const useTheme = () => {
 export const lightColors = {
   primary: '#6366f1',
   background: '#f5f5f5',
+  b_background: '#fafafa',
   card: '#ffffff',
   text: '#000000',
+  textSecondary: '#525252',
   sectionTitle: '#040404',
   titleText: '#62626',
   settingDescription: '#737373',
@@ -60,6 +62,7 @@ export const lightColors = {
   success: '#22c55e',
   warning: '#f59e0b',
   info: '#3b82f6',
+  shadow: '#000000',
   // Couleurs spécifiques pour les composants
   button: {
     primary: '#6366f1',
@@ -83,8 +86,10 @@ export const lightColors = {
 export const darkColors = {
   primary: '#818cf8',
   background: '#1a1a1a',
+  b_background: '#151515',
   card: '#2a2a2a',
   text: '#ffffff',
+  textSecondary: '#e5e5e5',
   sectionTitle: '#f5f5f5',
   titleText: '#fdfdfd',
   settingDescription: '#a3a3a3',
@@ -94,6 +99,7 @@ export const darkColors = {
   success: '#4ade80',
   warning: '#fbbf24',
   info: '#60a5fa',
+  shadow: '#000000',
   // Couleurs spécifiques pour les composants
   button: {
     primary: '#818cf8',

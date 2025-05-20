@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme, ThemeMode } from '@/store/themeStore';
 
@@ -21,7 +21,7 @@ export function ThemeSelector() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <Pressable
         style={[styles.button, { backgroundColor: colors.card }]}
         onPress={() => setIsOpen(true)}
       >
@@ -33,7 +33,7 @@ export function ThemeSelector() {
         <Text style={[styles.buttonText, { color: colors.text }]}>
           {currentTheme.name}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
 
       <Modal
         visible={isOpen}
@@ -47,7 +47,7 @@ export function ThemeSelector() {
         >
           <View style={[styles.modalContent, { backgroundColor: colors.modal.background }]}>
             {themes.map((theme) => (
-              <TouchableOpacity
+              <Pressable
                 key={theme.mode}
                 style={[
                   styles.option,
@@ -68,7 +68,7 @@ export function ThemeSelector() {
                 <Text style={[styles.optionText, { color: colors.text }]}>
                   {theme.name}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </View>
         </Pressable>

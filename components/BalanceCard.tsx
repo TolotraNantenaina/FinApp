@@ -4,10 +4,14 @@ import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';
 import { useTranslation } from 'react-i18next';
 import '../i18n';
+import { useTheme } from '@/store/themeStore';
 
 export const BalanceCard = () => {
   const { t } = useTranslation();
-  const { getCurrentBalance, getMonthlyTotals } = useAppStore();
+
+  const { colors, isDark } = useTheme();
+
+  const { formatAmount, getCurrentBalance, getMonthlyTotals } = useAppStore();
 
   const currentBalance = getCurrentBalance();
   const currentMonth = new Date().getMonth();
@@ -15,11 +19,12 @@ export const BalanceCard = () => {
   const { income, expense } = getMonthlyTotals(currentMonth, currentYear);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: colors.card, shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: isDark ? 4 : 2 }, shadowOpacity: isDark ? 1 : 0.1, shadowRadius: isDark ? 9 : 8 }]}>
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceLabel}>{t('balance.balance')}</Text>
+        <Text style={[styles.balanceLabel, { color: colors.settingDescription}]}>{t('balance.balance')}</Text>
         <Text style={[styles.balanceAmount, { color: currentBalance >= 0 ? '#16a34a' : '#dc2626' }]}>
-          €{currentBalance.toFixed(2)}
+        {formatAmount(0).replace(/[\d,.]/g, '')}{currentBalance.toFixed(2)}
         </Text>
       </View>
 
@@ -29,8 +34,8 @@ export const BalanceCard = () => {
             <ArrowUpCircle color="#16a34a" size={24} />
           </View>
           <View>
-            <Text style={styles.statLabel}>{t('balance.income')}</Text>
-            <Text style={styles.statValue}>€{income.toFixed(2)}</Text>
+            <Text style={[styles.statLabel, { color: colors.settingDescription}]}>{t('balance.income')}</Text>
+            <Text style={[styles.statValue, { color: colors.sectionTitle}]}>{formatAmount(0).replace(/[\d,.]/g, '')}{income.toFixed(2)}</Text>
           </View>
         </View>
 
@@ -41,8 +46,8 @@ export const BalanceCard = () => {
             <ArrowDownCircle color="#dc2626" size={24} />
           </View>
           <View>
-            <Text style={styles.statLabel}>{t('balance.expense')}</Text>
-            <Text style={styles.statValue}>€{expense.toFixed(2)}</Text>
+            <Text style={[styles.statLabel, { color: colors.settingDescription}]}>{t('balance.expense')}</Text>
+            <Text style={[styles.statValue, { color: colors.sectionTitle}]}>{formatAmount(0).replace(/[\d,.]/g, '')}{expense.toFixed(2)}</Text>
           </View>
         </View>
       </View>

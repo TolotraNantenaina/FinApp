@@ -43,9 +43,22 @@
     "settings": "Settings",
     "account": "Account",
     "profile": "Profile",
-    "managetext": "Manage your personal information",
+    "profiledesc": "Manage your personal information",
+    "payment": "Payment Methods",
+    "paymentdesc": "Add or remove payment methods",
     "preferences": "Preferences",
+    "theme": "Theme",
+    "themedesc": "Choose the theme that suits you",
+    "language": "Language",
+    "languagedesc": "Select the language you want to use",
+    "currency": "Currency",
+    "currencydesc": "Select the Currency you want to use",
     "financial": "Financial",
-    "support": "Support"
+    "init": "Initial Balance",
+    "update": "Update",
+    "support": "Support",
+    "help" : "Help Center",
+    "helpdesc": "Get help and contact support",
+    "log-out": "Log Out"
   }
 } 

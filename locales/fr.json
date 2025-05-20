@@ -43,9 +43,22 @@
     "settings": "Paramètres",
     "account": "Compte",
     "profile": "Profile",
-    "managetext": "Gérer vos information personnel",
+    "profiledesc": "Gérer vos information personnel",
+    "payment": "Mode de Paiement",
+    "paymentdesc": "Ajouter or supprimer une Mode de Paiement",
     "preferences": "Préférences",
+    "theme": "Thême",
+    "themedesc": "Choisir une thême qui vous covient",
+    "language": "Langue",
+    "languagedesc": "Choisir une langue pour vous",
+    "currency": "Monnaie",
+    "currencydesc": "Choisir le Monnaie de change approprié",
     "financial": "Financial",
-    "support": "Support"
+    "init": "Solde Initial",
+    "update": "Mise-à-jour",
+    "support": "Support",
+    "help" : "Center d'aide",
+    "helpdesc": "Recevoir de l'aide et une contacte de support",
+    "log-out": "Quitter"
   }
 } 

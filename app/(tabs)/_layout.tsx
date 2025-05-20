@@ -3,21 +3,24 @@ import { Tabs } from 'expo-router';
 import { Home, BarChart3, Clock, Settings } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
+import { useTheme } from '@/store/themeStore';
 
 export default function TabLayout() {
+  const { colors } = useTheme();
   const { t } = useTranslation();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#6366f1',
-        tabBarInactiveTintColor: '#737373',
+        tabBarActiveTintColor: colors.primary/*'#6366f1'*/,
+        tabBarInactiveTintColor: colors.button.textSecondary/*'#737373'*/,
         tabBarStyle: {
           borderTopWidth: 1,
-          borderTopColor: '#f5f5f5',
+          borderTopColor: colors.border/*'#f5f5f5'*/,
           height: 60,
           paddingBottom: 8,
           paddingTop: 8,
+          backgroundColor: colors.card
         },
         tabBarLabelStyle: {
           fontSize: 12,
