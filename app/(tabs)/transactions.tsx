@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Pressable, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format } from 'date-fns';
@@ -8,6 +8,8 @@ import { useAppStore } from '@/store/appStore';
 import { Transaction, Category, TransactionType } from '@/types';
 import { AddTransactionButton } from '@/components/AddTransactionButton';
 import { TransactionForm } from '@/components/TransactionForm';
+import { useTranslation } from 'react-i18next';
+import '../../i18n';
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -16,7 +18,7 @@ interface TransactionItemProps {
 
 const TransactionItem = ({ transaction, category }: TransactionItemProps) => {
   return (
-    <TouchableOpacity style={styles.transactionItem}>
+    <Pressable style={styles.transactionItem}>
       <View style={[styles.iconContainer, { backgroundColor: category?.color || '#e5e5e5' }]}>
         {transaction.type === 'income' ? (
           <ArrowUpRight color="#fff" size={18} />
@@ -41,13 +43,15 @@ const TransactionItem = ({ transaction, category }: TransactionItemProps) => {
         styles.transactionAmount,
         { color: transaction.type === 'income' ? '#16a34a' : '#dc2626' }
       ]}>
-        {transaction.type === 'income' ? '+' : '-'}€{transaction.amount.toFixed(2)}
+        {transaction.type === 'income' ? '+' : '-'}€{transaction.amount ? transaction.amount.toFixed(2) : Number('0').toFixed(2)}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 export default function TransactionsScreen() {
+  const { t } = useTranslation();
+
   const { transactions, categories } = useAppStore();
   const [activeFilter, setActiveFilter] = useState<TransactionType | 'all'>('all');
   
@@ -118,21 +122,21 @@ export default function TransactionsScreen() {
       <StatusBar style="dark" />
       
       <View style={styles.header}>
-        <Text style={styles.titleText}>Transactions</Text>
+        <Text style={styles.titleText}>{t('transaction.transactions')}</Text>
         
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>
             <Search size={20} color="#737373" />
-            <Text style={styles.searchPlaceholder}>Search transactions</Text>
+            <Text style={styles.searchPlaceholder}>{t('transaction.search')}</Text>
           </View>
           
-          <TouchableOpacity style={styles.filterButton}>
+          <Pressable style={styles.filterButton}>
             <Filter size={20} color="#525252" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         
         <View style={styles.filterContainer}>
-          <TouchableOpacity 
+          <Pressable 
             style={[
               styles.filterTab,
               activeFilter === 'all' && styles.activeFilterTab,
@@ -143,11 +147,11 @@ export default function TransactionsScreen() {
               styles.filterTabText,
               activeFilter === 'all' && styles.activeFilterText,
             ]}>
-              All
+              {t('transaction.all')}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity 
+          <Pressable 
             style={[
               styles.filterTab,
               activeFilter === 'expense' && styles.activeExpenseTab,
@@ -158,11 +162,11 @@ export default function TransactionsScreen() {
               styles.filterTabText,
               activeFilter === 'expense' && styles.activeFilterText,
             ]}>
-              Expenses
+              {t('balance.expense')}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity 
+          <Pressable 
             style={[
               styles.filterTab,
               activeFilter === 'income' && styles.activeIncomeTab,
@@ -173,9 +177,9 @@ export default function TransactionsScreen() {
               styles.filterTabText,
               activeFilter === 'income' && styles.activeFilterText,
             ]}>
-              Income
+              {t('balance.income')}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
       

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Plus } from 'lucide-react-native';
 
 interface AddTransactionButtonProps {
@@ -9,9 +9,9 @@ interface AddTransactionButtonProps {
 export const AddTransactionButton = ({ onPress }: AddTransactionButtonProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <Pressable style={styles.button} onPress={onPress}>
         <Plus color="#fff" size={24} />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

@@ -5,7 +5,7 @@ import {
   Text, 
   StyleSheet, 
   TextInput, 
-  TouchableOpacity, 
+  Pressable, 
   ScrollView,
   KeyboardAvoidingView,
   Platform
@@ -52,7 +52,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
     >
       <ScrollView>
         <View style={styles.typeSelector}>
-          <TouchableOpacity
+          <Pressable
             style={[
               styles.typeButton,
               type === 'expense' && styles.activeTypeButton
@@ -69,9 +69,9 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
             ]}>
               Expense
             </Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity
+          <Pressable
             style={[
               styles.typeButton,
               type === 'income' && styles.activeIncomeButton
@@ -88,7 +88,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
             ]}>
               Income
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         
         <View style={styles.formGroup}>
@@ -114,7 +114,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
             contentContainerStyle={styles.categoriesContainer}
           >
             {categories.map((category:any) => (
-              <TouchableOpacity
+              <Pressable
                 key={category.id}
                 style={[
                   styles.categoryButton,
@@ -128,7 +128,7 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
                 ]}>
                   {category.name}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             ))}
           </ScrollView>
         </View>
@@ -152,12 +152,12 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
       </ScrollView>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+        <Pressable style={styles.cancelButton} onPress={onCancel}>
           <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+        </Pressable>
+        <Pressable style={styles.saveButton} onPress={handleSubmit}>
           <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </KeyboardAvoidingView>
   );

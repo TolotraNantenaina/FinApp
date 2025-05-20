@@ -2,8 +2,11 @@ import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';
+import { useTranslation } from 'react-i18next';
+import '../i18n';
 
 export const BalanceCard = () => {
+  const { t } = useTranslation();
   const { getCurrentBalance, getMonthlyTotals } = useAppStore();
 
   const currentBalance = getCurrentBalance();
@@ -14,7 +17,7 @@ export const BalanceCard = () => {
   return (
     <View style={styles.container}>
       <View style={styles.balanceContainer}>
-        <Text style={styles.balanceLabel}>Current Balance</Text>
+        <Text style={styles.balanceLabel}>{t('balance.balance')}</Text>
         <Text style={[styles.balanceAmount, { color: currentBalance >= 0 ? '#16a34a' : '#dc2626' }]}>
           €{currentBalance.toFixed(2)}
         </Text>
@@ -26,7 +29,7 @@ export const BalanceCard = () => {
             <ArrowUpCircle color="#16a34a" size={24} />
           </View>
           <View>
-            <Text style={styles.statLabel}>Income</Text>
+            <Text style={styles.statLabel}>{t('balance.income')}</Text>
             <Text style={styles.statValue}>€{income.toFixed(2)}</Text>
           </View>
         </View>
@@ -38,7 +41,7 @@ export const BalanceCard = () => {
             <ArrowDownCircle color="#dc2626" size={24} />
           </View>
           <View>
-            <Text style={styles.statLabel}>Expenses</Text>
+            <Text style={styles.statLabel}>{t('balance.expense')}</Text>
             <Text style={styles.statValue}>€{expense.toFixed(2)}</Text>
           </View>
         </View>

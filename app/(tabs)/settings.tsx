@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Switch, TextInput, Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useAppStore } from '@/store/appStore';
@@ -12,8 +12,12 @@ import {
   LogOut,
   Moon
 } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
+import '../../i18n';
+
 
 export default function SettingsScreen() {
+  const { t } = useTranslation();
   const { setInitialBalance, initialBalance } = useAppStore();
   const [balanceText, setBalanceText] = useState(initialBalance.toString());
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -40,120 +44,121 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar style="dark" />
-      
-      <View style={styles.header}>
-        <Text style={styles.titleText}>Settings</Text>
-      </View>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Account</Text>
-        
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <User size={20} color="#525252" />
-          </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Profile</Text>
-            <Text style={styles.settingDescription}>Manage your personal information</Text>
-          </View>
-          <ChevronRight size={20} color="#a3a3a3" />
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <CreditCard size={20} color="#525252" />
-          </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Payment Methods</Text>
-            <Text style={styles.settingDescription}>Add or remove payment methods</Text>
-          </View>
-          <ChevronRight size={20} color="#a3a3a3" />
-        </TouchableOpacity>
-      </View>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Preferences</Text>
-        
-        <View style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <Moon size={20} color="#525252" />
-          </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Dark Mode</Text>
-            <Text style={styles.settingDescription}>Switch to dark theme</Text>
-          </View>
-          <Switch
-            value={isDarkMode}
-            onValueChange={toggleDarkMode}
-            trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
-            thumbColor={'#fff'}
-          />
+      <ScrollView>
+        <View style={styles.header}>
+          <Text style={styles.titleText}>{t('setting.settings')}</Text>
         </View>
         
-        <View style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <Bell size={20} color="#525252" />
-          </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Notifications</Text>
-            <Text style={styles.settingDescription}>Enable push notifications</Text>
-          </View>
-          <Switch
-            value={isNotificationsEnabled}
-            onValueChange={toggleNotifications}
-            trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
-            thumbColor={'#fff'}
-          />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Account</Text>
+          
+          <Pressable style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <User size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Profile</Text>
+              <Text style={styles.settingDescription}>Manage your personal information</Text>
+            </View>
+            <ChevronRight size={20} color="#a3a3a3" />
+          </Pressable>
+          
+          <Pressable style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <CreditCard size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Payment Methods</Text>
+              <Text style={styles.settingDescription}>Add or remove payment methods</Text>
+            </View>
+            <ChevronRight size={20} color="#a3a3a3" />
+          </Pressable>
         </View>
-      </View>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Financial</Text>
         
-        <View style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <CreditCard size={20} color="#525252" />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Preferences</Text>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <Moon size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Dark Mode</Text>
+              <Text style={styles.settingDescription}>Switch to dark theme</Text>
+            </View>
+            <Switch
+              value={isDarkMode}
+              onValueChange={toggleDarkMode}
+              trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
+              thumbColor={'#fff'}
+            />
           </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Initial Balance</Text>
-            <View style={styles.balanceInputContainer}>
-              <TextInput
-                style={styles.balanceInput}
-                value={balanceText}
-                onChangeText={setBalanceText}
-                keyboardType="numeric"
-                placeholder="0.00"
-              />
-              <TouchableOpacity 
-                style={styles.updateButton}
-                onPress={handleBalanceChange}
-              >
-                <Text style={styles.updateButtonText}>Update</Text>
-              </TouchableOpacity>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <Bell size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Notifications</Text>
+              <Text style={styles.settingDescription}>Enable push notifications</Text>
+            </View>
+            <Switch
+              value={isNotificationsEnabled}
+              onValueChange={toggleNotifications}
+              trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
+              thumbColor={'#fff'}
+            />
+          </View>
+        </View>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Financial</Text>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <CreditCard size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Initial Balance</Text>
+              <View style={styles.balanceInputContainer}>
+                <TextInput
+                  style={styles.balanceInput}
+                  value={balanceText}
+                  onChangeText={setBalanceText}
+                  keyboardType="numeric"
+                  placeholder="0.00"
+                />
+                <Pressable 
+                  style={styles.updateButton}
+                  onPress={handleBalanceChange}
+                >
+                  <Text style={styles.updateButtonText}>Update</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Support</Text>
         
-        <TouchableOpacity style={styles.settingItem}>
-          <View style={styles.settingIconContainer}>
-            <HelpCircle size={20} color="#525252" />
-          </View>
-          <View style={styles.settingContent}>
-            <Text style={styles.settingTitle}>Help Center</Text>
-            <Text style={styles.settingDescription}>Get help and contact support</Text>
-          </View>
-          <ChevronRight size={20} color="#a3a3a3" />
-        </TouchableOpacity>
-      </View>
-      
-      <TouchableOpacity style={styles.logoutButton}>
-        <LogOut size={20} color="#dc2626" />
-        <Text style={styles.logoutText}>Log Out</Text>
-      </TouchableOpacity>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Support</Text>
+          
+          <Pressable style={styles.settingItem}>
+            <View style={styles.settingIconContainer}>
+              <HelpCircle size={20} color="#525252" />
+            </View>
+            <View style={styles.settingContent}>
+              <Text style={styles.settingTitle}>Help Center</Text>
+              <Text style={styles.settingDescription}>Get help and contact support</Text>
+            </View>
+            <ChevronRight size={20} color="#a3a3a3" />
+          </Pressable>
+        </View>
+        
+        <Pressable style={styles.logoutButton}>
+          <LogOut size={20} color="#dc2626" />
+          <Text style={styles.logoutText}>Log Out</Text>
+        </Pressable>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -247,6 +252,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 16,
     marginTop: 16,
+    marginBottom: 20,
     paddingVertical: 16,
     borderRadius: 12,
     borderWidth: 1,

@@ -1,0 +1,45 @@
+{
+  "common": {
+    "welcome": "Willkommen",
+    "settings": "Einstellungen",
+    "language": "Sprache"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort"
+  },
+  "menu" : {
+    "home": "Heim",
+    "statistics": "Statistiken",
+    "transactions": "Transaktionen",
+    "settings": "Einstellungen"
+  },
+  "home": {
+    "welcome" : "Hallöchen",
+    "headText": "Finanzieller Üerblick",
+    "category": "Ausgaben nach Kategorie", 
+    "transaction": "Letzte Transaktionen",
+    "all" : "Alle anzeigen",
+    "add" : "Transaktion hinzufügen"
+  },
+  "balance": {
+    "balance": "Aktuller Saldo",
+    "income": "Einkommen",
+    "expense": "Ausgabe"
+  },
+  "transaction": {
+    "transactions": "Transaktionen",
+    "search": "Transaktionen suchen",
+    "all" : "Alle"
+  },
+  "statistic": {
+    "statistics": "Statistiken",
+    "balance": "Saldo",
+    "month": "6-Monats-Trend"
+  },
+  "setting": {
+    "settings": "Paramètres"
+  }
+} 

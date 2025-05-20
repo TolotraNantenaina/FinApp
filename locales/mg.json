@@ -1,0 +1,45 @@
+{
+  "common": {
+    "welcome": "Tongasoa",
+    "settings": "Safidy",
+    "language": "Fiteny"
+  },
+  "auth": {
+    "login": "Hiditra",
+    "register": "Hisoratra anarana",
+    "email": "Mailaka",
+    "password": "Teny miafina"
+  },
+  "menu" : {
+    "home": "Trano",
+    "statistics": "Antontan'isa",
+    "transactions": "Fifanakalozana",
+    "settings": "Safidy"
+  },
+  "home": {
+    "welcome" : "Salama eh",
+    "headText": "Fijery ara-bola",
+    "category": "Fandaniana araka ny sokajy",
+    "transaction": "Fifanakalozana ara-bola vao haingana",
+    "all" : "Hijery azy rehetra",
+    "add" : "Hanampy Fifanakalozana ara-bola"
+  },
+  "balance": {
+    "balance": "Sandam-bola ankehitriny",
+    "income": "Fidiram-bola",
+    "expense": "Fandanim-bola"
+  },
+  "transaction": {
+    "transactions": "Fifanakalozana ara-bola",
+    "search": "Hitady fifanakalozana ara-bola",
+    "all" : "Izy Rehetra"
+  },
+  "statistic": {
+    "statistics": "Antontan'isa",
+    "balance": "Sandam-bola",
+    "month": "6-bolana fironana"
+  },
+  "setting": {
+    "settings": "Safidy"
+  }
+} 

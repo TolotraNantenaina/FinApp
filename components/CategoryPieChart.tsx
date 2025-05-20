@@ -2,10 +2,13 @@ import  * as React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { useAppStore } from '@/store/appStore';
+import { useTranslation } from 'react-i18next';
+import '../i18n';
 
 const screenWidth = Dimensions.get('window').width;
 
 export const CategoryPieChart = () => {
+  const { t } = useTranslation();
   const { getCategorySpending, categories } = useAppStore();
   
   const currentMonth = new Date().getMonth();
@@ -28,7 +31,7 @@ export const CategoryPieChart = () => {
   if (chartData.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Spending by Category</Text>
+        <Text style={styles.title}>{t('home.category')}</Text>
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No spending data for this month</Text>
         </View>
@@ -38,7 +41,7 @@ export const CategoryPieChart = () => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Spending by Category</Text>
+      <Text style={styles.title}>{t('home.category')}</Text>
       <View style={styles.chartContainer}>
         <PieChart
           data={chartData}

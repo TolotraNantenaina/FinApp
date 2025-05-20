@@ -1,0 +1,45 @@
+{
+  "common": {
+    "welcome": "Bienvenue",
+    "settings": "Paramètres",
+    "language": "Langue"
+  },
+  "menu" : {
+    "home": "Accueil",
+    "statistics": "Statistiques",
+    "transactions": "Transactions",
+    "settings": "Paramètres"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "email": "Email",
+    "password": "Mot de passe"
+  },
+  "home": {
+    "welcome" : "Bonjour toi",
+    "headText": "Aperçu Financier",
+    "category": "Dépenses par Catégorie",
+    "transaction": "Transactions Récentes",
+    "all" : "Tout Voir",
+    "add" : "Ajouter une Transaction"
+  },
+  "balance": {
+    "balance": "Solde actuel",
+    "income": "Revenu",
+    "expense": "Dépenses"
+  },
+  "transaction": {
+    "transactions": "Transactions",
+    "search": "Recherche de transactions",
+    "all" : "Tout"
+  },
+  "statistic": {
+    "statistics": "Statistiques",
+    "balance": "Solde",
+    "month": "Tendance sur 6 mois"
+  },
+  "setting": {
+    "settings": "Paramètres"
+  }
+} 
