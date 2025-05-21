@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Modal, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -11,6 +11,8 @@ import { TransactionForm } from '@/components/TransactionForm';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
+import { Settings } from 'lucide-react-native';
+import { ThemeSelector } from '@/components/ThemeSelector';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
@@ -42,6 +44,9 @@ export default function HomeScreen() {
             <Text style={[styles.welcomeText, { color: colors.sectionTitle }]}>{t('home.welcome')}, </Text>
             <Text style={[styles.titleText, { color: colors.titleText }]}>{t('home.headText')}</Text>
           </View>
+          <Pressable onPress={() => router.push('/settings')}>
+            {isDark ? <Settings size='30' color='#fff' /> : <Settings size='30' color='#000' />}
+          </Pressable>
         </View>
         
         <BalanceCard />

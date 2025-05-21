@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format, subMonths, addMonths } from 'date-fns';
-import { ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { ChevronLeft, ChevronRight, Settings } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
+import { router } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -97,6 +98,10 @@ export default function StatisticsScreen() {
       <View style={styles.header}>
         <Text style={[styles.titleText, { color: colors.titleText}]}>{t('statistic.statistics')}</Text>
         
+        <Pressable style={styles.Right} onPress={() => router.push('/settings')}>
+            {isDark ? <Settings size='30' color='#fff' /> : <Settings size='30' color='#000' />}
+        </Pressable>
+
         <View style={[styles.monthSelector, { backgroundColor : colors.card }]}>
           <Pressable 
             style={styles.monthButton} 
@@ -384,5 +389,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 24,
     color: '#737373',
-  },
+  },// const styles = StyleSheet.create({
+  Right :  {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    zIndex: 1000,
+    flexDirection: 'row',
+    gap: 8
+  }
 });

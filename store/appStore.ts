@@ -19,6 +19,7 @@ interface AppState {
   updateTransaction: (id: string, transaction: Partial<Transaction>) => void;
   deleteTransaction: (id: string) => void;
   getTransactionsByMonth: (month: number, year: number) => Transaction[];
+  getTransactionById: (id: string) => Transaction | undefined;
   
   // Categories methods
   addCategory: (category: Omit<Category, 'id'>) => void;
@@ -101,6 +102,10 @@ export const useAppStore = create<AppState>()(
           const date = new Date(t.date);
           return date.getMonth() === month && date.getFullYear() === year;
         });
+      },
+      
+      getTransactionById: (id) => {
+        return get().transactions.find((t) => t.id === id);
       },
       
       // Categories methods

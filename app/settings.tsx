@@ -10,15 +10,17 @@ import {
   HelpCircle,
   ChevronRight,
   LogOut,
-  Moon
+  Moon,
+  ChevronLeft
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
-import '../../i18n';
+import '../i18n';
 import { CurrencySelector } from '@/components/CurrencySelector';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ThemeSelector, getCurrentTheme } from '@/components/ThemeSelector';
 import { useTheme } from '@/store/themeStore';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 
 export default function SettingsScreen() {
@@ -55,23 +57,28 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
+
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <ChevronLeft size={25} fontWeight='700' color={ colors.button.textSecondary } />
+        </Pressable>
+        <Text style={[styles.titleText, { color: colors.titleText }]}>{t('setting.settings')}</Text>
+      </View>
+
       <ScrollView>
-        <View style={styles.header}>
-          <Text style={[styles.titleText, { color: colors.titleText }]}>{t('setting.settings')}</Text>
-        </View>
         
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.account')}</Text>
           
           <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <View style={[styles.settingIconContainer, , { backgroundColor: colors.background, borderColor: colors.border }]}>
+            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
               <User size={20} color={colors.text} />
             </View>
             <View style={styles.settingContent}>
               <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.profile')}</Text>
               <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.profiledesc')}</Text>
             </View>
-            <ChevronRight size={20} color="#a3a3a3" />
+            <ChevronRight size={20} color={ colors.button.textSecondary } />
           </Pressable>
           
           <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
@@ -82,7 +89,7 @@ export default function SettingsScreen() {
               <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.theme')}</Text>
               <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.themedesc')}</Text>
             </View>
-            <ChevronRight size={20} color="#a3a3a3" />
+            <ChevronRight size={20} color={ colors.button.textSecondary } />
           </Pressable>
         </View>
         
@@ -206,14 +213,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 16,
+    alignItems: 'center',
   },
   titleText: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#262626',
-    marginBottom: 8,
+    // marginBottom: 8,
+    textAlign:'center',
+    flex: 1,
   },
   section: {
     marginBottom: 24,
@@ -303,5 +313,10 @@ const styles = StyleSheet.create({
   },
   settingLabel: {
     fontSize: 16,
+  },
+  backButton: {
+    marginRight: -25,
+    width: 25,
+    zIndex: 1000
   },
 });
