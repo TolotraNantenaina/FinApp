@@ -32,7 +32,7 @@ const TransactionItem = ({ transaction, category, onPress, formatAmount }: Trans
       </View>
       
       <View style={styles.transactionInfo}>
-        <Text style={styles.transactionName}>{category?.name || 'Uncategorized'}</Text>
+        <Text style={[styles.transactionName, { color: colors.text}]}>{category?.name || 'Uncategorized'}</Text>
         <Text style={styles.transactionDate}>
           {format(new Date(transaction.date), 'dd MMM yyyy')}
         </Text>
@@ -58,7 +58,8 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
   
   const handleTransactionPress = (transaction: Transaction) => {
     // Navigate to transaction details when implemented
-    navigation.navigate('TransactionDetails', { transactionId: transaction.id });
+    navigation.navigate({pathname: '/TransactionDetails',
+      params: { transactionId: transaction.id, transaction: JSON.stringify(transaction) }});
   };
   
   const getCategoryById = (categoryId: string) => {

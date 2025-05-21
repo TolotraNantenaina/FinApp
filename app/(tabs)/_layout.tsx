@@ -50,6 +50,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => <Clock size={size} color={color} />,
         }}
       />
+      {/* 
       <Tabs.Screen
         name="settings"
         options={{
@@ -57,6 +58,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
         }}
       />
+      */}
     </Tabs>
   );
 }

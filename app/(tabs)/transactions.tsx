@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, Pressable, Modal, TextInput } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { format } from 'date-fns';
-import { Search, Filter, ArrowUpRight, ArrowDownLeft } from 'lucide-react-native';
+import { Search, Filter, ArrowUpRight, ArrowDownLeft, Settings } from 'lucide-react-native';
 import { useAppStore } from '@/store/appStore';
 import { Transaction, Category, TransactionType } from '@/types';
 import { AddTransactionButton } from '@/components/AddTransactionButton';
@@ -12,17 +12,21 @@ import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { router, useRouter } from 'expo-router';
 
 interface TransactionItemProps {
   transaction: Transaction;
   category: Category | undefined;
   colors: any;
+  onPress: (transaction: Transaction) => void;
 }
 
-const TransactionItem = ({ transaction, category, colors }: TransactionItemProps) => {
+const TransactionItem = ({ transaction, category, colors, onPress }: TransactionItemProps) => {
 
   return (
-    <Pressable style={[styles.transactionItem, { backgroundColor:  colors.card, borderBottomColor: colors.border }]}>
+    <Pressable style={[styles.transactionItem, { backgroundColor:  colors.card, borderBottomColor: colors.border }]}
+    onPress={() => onPress(transaction)}
+    >
       <View style={[styles.iconContainer, { backgroundColor: category?.color || '#e5e5e5' }]}>
         {transaction.type === 'income' ? (
           <ArrowUpRight color="#fff" size={18} />
@@ -54,6 +58,8 @@ const TransactionItem = ({ transaction, category, colors }: TransactionItemProps
 };
 
 export default function TransactionsScreen() {
+  const navigation = useRouter();
+  
   const { t } = useTranslation();
 
   const { colors, isDark } = useTheme();
@@ -94,6 +100,12 @@ export default function TransactionsScreen() {
     date,
     data: groupedTransactions[date],
   }));
+
+  const handleTransactionPress = (transaction: Transaction) => {
+    // Navigate to transaction details when implemented
+    navigation.navigate({pathname: '/TransactionDetails',
+      params: { transactionId: transaction.id, transaction: JSON.stringify(transaction) }});
+  };
   
   const renderSectionHeader = (date: string) => {
     const transactionDate = new Date(date);
@@ -111,6 +123,7 @@ export default function TransactionsScreen() {
       transaction={item}
       category={getCategoryById(item.categoryId)}
       colors={colors}
+      onPress={handleTransactionPress}
     />
   );
 
@@ -138,7 +151,11 @@ export default function TransactionsScreen() {
       
       <View style={styles.header}>
         <Text style={[styles.titleText, { color: colors.titleText }]}>{t('transaction.transactions')}</Text>
-        
+
+        <Pressable style={styles.Right} onPress={() => router.push('/settings')}>
+            {isDark ? <Settings size='30' color='#fff' /> : <Settings size='30' color='#000' />}
+        </Pressable>
+
         <View style={styles.searchContainer}>
           <View style={[styles.searchInputContainer, { backgroundColor: colors.input.background }]}>
             <Search size={20} color={colors.input.placeholder} />
@@ -151,7 +168,7 @@ export default function TransactionsScreen() {
           </View>
           
           <Pressable
-            style={[styles.filterButton, { backgroundColor: colors.button.secondary }]}
+            style={[styles.filterButton, { backgroundColor: colors.input.background }]}
             onPress={handleSearchChange}
             >
             <Filter size={20} color={colors.button.textSecondary} />
@@ -425,4 +442,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f5f5f5',
   },
+  Right :  {
+    position: 'absolute',
+    right: 16,
+    top: 16,
+    zIndex: 1000,
+    flexDirection: 'row',
+    gap: 8
+  }
 });
