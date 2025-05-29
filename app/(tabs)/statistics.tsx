@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -10,7 +10,9 @@ import { Dimensions } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
+import Animated, { useSharedValue, useAnimatedStyle,
+  withTiming,  withSpring } from 'react-native-reanimated';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -35,6 +37,42 @@ export default function StatisticsScreen() {
   const handleNextMonth = () => {
     setCurrentDate(addMonths(currentDate, 1));
   };
+  
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(20);
+  const scale = useSharedValue(0.8);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Réinitialise les valeurs
+      opacity.value = 0;
+      translateY.value = 20;
+      scale.value = 0.8;
+
+      // Lance l’animation
+      opacity.value = withTiming(1, { duration: 800 });
+      translateY.value = withTiming(0, { duration: 800 });
+      scale.value = withSpring(1, { damping: 8 });
+
+      // Optionnel : nettoyage
+      return () => {
+        // Si tu veux réinitialiser à chaque sortie, sinon retire
+        opacity.value = 0;
+        translateY.value = 20;
+        scale.value = 0.8;
+      };
+    }, [])
+  );
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+      transform: [
+        { translateY: translateY.value },
+        { scale: scale.value },
+      ],
+    };
+  });
   
   const isCurrentMonth = () => {
     const today = new Date();
@@ -95,7 +133,9 @@ export default function StatisticsScreen() {
     <SafeAreaView style={[styles.container, {backgroundColor: colors.background}]} edges={['top']}>
       <StatusBar style={isDark ? "dark" : "light"} />
       
-      <View style={styles.header}>
+      <Animated.View
+        style={[styles.header/*, animatedHeaderStyle*/]}
+      >
         <Text style={[styles.titleText, { color: colors.titleText}]}>{t('statistic.statistics')}</Text>
         
         <Pressable style={styles.Right} onPress={() => router.push('/settings')}>
@@ -125,10 +165,12 @@ export default function StatisticsScreen() {
             <ChevronRight size={20} color={isCurrentMonth() ? '#a3a3a3' : '#525252'} />
           </Pressable>
         </View>
-      </View>
+      </Animated.View>
       
       <ScrollView>
-        <View style={[styles.summaryContainer, { backgroundColor: colors.card }]}>
+        <Animated.View
+          style={[styles.summaryContainer, { backgroundColor: colors.card }, animatedStyle]}
+        >
           <View style={styles.summaryItem}>
             <Text style={[styles.summaryLabel, { color: colors.settingDescription}]}>{t('balance.income')}</Text>
             <Text style={[styles.summaryValue, styles.incomeValue]}>
@@ -156,9 +198,11 @@ export default function StatisticsScreen() {
               {formatAmount(0).replace(/[\d,.]/g, '')}{balance.toFixed(2)}
             </Text>
           </View>
-        </View>
+        </Animated.View>
         
-        <View style={[styles.chartContainer, { backgroundColor: colors.card }]}>
+        <Animated.View
+          style={[styles.chartContainer, { backgroundColor: colors.card }, animatedStyle]}
+        >
           <Text style={[styles.sectionTitle, { color: colors.sectionTitle}]}>{t('statistic.month')}</Text>
           <LineChart
             data={generateMonthsData()}
@@ -181,13 +225,15 @@ export default function StatisticsScreen() {
             bezier
             style={styles.chart}
           />
-        </View>
+        </Animated.View>
         
-        <View style={[styles.categoryContainer, { backgroundColor: colors.card}]}>
+        <Animated.View
+          style={[styles.categoryContainer, { backgroundColor: colors.card}, animatedStyle]}
+        >
           <Text style={[styles.sectionTitle, { color: colors.sectionTitle}]}>{t('home.category')}</Text>
           
           {spendingByCategory.length === 0 ? (
-            <Text style={[styles.emptyText, { color: colors.settingDescription}]}>No expenses for this month</Text>
+            <Text style={[styles.emptyText, { color: colors.settingDescription}]}>{t('home.no-expense')}</Text>
           ) : (
             spendingByCategory.map((category) => (
               <View key={category.id} style={styles.categoryItem}>
@@ -217,7 +263,7 @@ export default function StatisticsScreen() {
               </View>
             ))
           )}
-        </View>
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );

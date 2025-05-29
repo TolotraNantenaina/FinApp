@@ -166,10 +166,10 @@ export default function TransactionModifForm({ transactionId, onSubmit, onCancel
 
       <View style={[styles.buttonContainer, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
         <Pressable style={styles.cancelButton} onPress={onCancel}>
-          <Text style={[styles.cancelButtonText, { color: colors.settingDescription }]}>{t('common.cancel') || 'Annuler'}</Text>
+          <Text style={[styles.cancelButtonText, { color: colors.settingDescription }]}>{t('detail.cancel') || 'Annuler'}</Text>
         </Pressable>
         <Pressable style={styles.saveButton} onPress={handleSubmit}>
-          <Text style={[styles.saveButtonText, { color: colors.button.text }]}>{t('common.save') || 'Enregistrer'}</Text>
+          <Text style={[styles.saveButtonText, { color: colors.button.text }]}>{t('detail.save') || 'Enregistrer'}</Text>
         </Pressable>
       </View>
     </KeyboardAvoidingView>

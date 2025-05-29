@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Switch, TextInput, Alert, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Switch, TextInput, Alert, ScrollView, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useAppStore } from '@/store/appStore';
@@ -11,7 +11,8 @@ import {
   ChevronRight,
   LogOut,
   Moon,
-  ChevronLeft
+  ChevronLeft,
+  X
 } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 import '../i18n';
@@ -20,21 +21,25 @@ import { LanguageSelector } from '@/components/LanguageSelector';
 import { ThemeSelector, getCurrentTheme } from '@/components/ThemeSelector';
 import { useTheme } from '@/store/themeStore';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { Href, router } from 'expo-router';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
 
   const { colors, isDark } = useTheme();
-  const { setInitialBalance, initialBalance } = useAppStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const { getUser, setUser, setInitialBalance, initialBalance } = useAppStore();
   const { mode, setMode, currentTheme }  = getCurrentTheme();
+  const user: any = getUser();
+
+  const [mail, setMail] = useState('');
+  const [username, setUserName] = useState('');
+  const [isUserCanged, setIsUserCanged] = useState(false);
+  const [rotationChevron, setRotationChevron] = useState('0');
 
   const [balanceText, setBalanceText] = useState(initialBalance.toString());
-
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
   
   const handleBalanceChange = () => {
     const newBalance = parseFloat(balanceText);
@@ -45,21 +50,58 @@ export default function SettingsScreen() {
       Alert.alert('Error', 'Please enter a valid number');
     }
   };
-  
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+
+  const OnChangeValue = () => {
+    if (user) {
+      setIsUserCanged(user.name.trim()!==username.trim() || (user.mail && user.mail.trim()!==mail.trim()))
+    }
   };
   
-  const toggleNotifications = () => {
-    setIsNotificationsEnabled(!isNotificationsEnabled);
+  const handleSubmitUserChange = () => {
+    if (!username.trim()) {
+      Alert.alert(t('onboarding.error'), t('onboarding.usernameRequired'));
+      return;
+    }
+
+    const newUser: any = {
+      id: user.id, // L'ID sera généré dans le store
+      name: username.trim(),
+      email: mail ? mail.trim() : '', // Optionnel pour l'instant
+      initialBalance: user.balance
+    };
+
+    setUser(newUser);
+    setIsOpen(false);
   };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  useEffect(() => {
+    if (user) {
+      user.name && username === '' ? setUserName(user.name) : '';
+      user.mail && mail === '' ? setMail(user.mail) : '';
+      
+      setIsUserCanged((user.name && user.name.trim()!==username.trim()) || (user.mail && user.mail.trim()!==mail.trim()))
+      
+    }
+    if (isOpen)
+      setRotationChevron('90');
+    else
+      setRotationChevron('0');
+  });
   
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]} edges={['top']}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
 
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
+        <Pressable onPress={() => {
+            let dir = '/(tabs)/'
+            router.canGoBack() ? router.back() : router.navigate(dir as Href)
+            }}
+          style={styles.backButton}>
           <ChevronLeft size={25} fontWeight='700' color={ colors.button.textSecondary } />
         </Pressable>
         <Text style={[styles.titleText, { color: colors.titleText }]}>{t('setting.settings')}</Text>
@@ -70,7 +112,9 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.sectionTitle }]}>{t('setting.account')}</Text>
           
-          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}
+            onPress={openModal}
+          >
             <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
               <User size={20} color={colors.text} />
             </View>
@@ -78,19 +122,9 @@ export default function SettingsScreen() {
               <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.profile')}</Text>
               <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.profiledesc')}</Text>
             </View>
-            <ChevronRight size={20} color={ colors.button.textSecondary } />
+            <ChevronRight size={25} color={ colors.button.textSecondary } transform={rotationChevron} />
           </Pressable>
           
-          <Pressable style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <View style={[styles.settingIconContainer, , { backgroundColor: colors.background, borderColor: colors.border }]}>
-              <CreditCard size={20} color={colors.text} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.sectionTitle }]}>{t('setting.theme')}</Text>
-              <Text style={[styles.settingDescription, { color: colors.settingDescription }]}>{t('setting.themedesc')}</Text>
-            </View>
-            <ChevronRight size={20} color={ colors.button.textSecondary } />
-          </Pressable>
         </View>
         
         <View style={styles.section}>
@@ -112,22 +146,6 @@ export default function SettingsScreen() {
               <ThemeSelector />
             </View>
           </View>
-          
-          {/* <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
-              <Bell size={20} color={colors.text} />
-            </View>
-            <View style={styles.settingContent}>
-              <Text style={[styles.settingTitle, { color: colors.text }]}>Notifications</Text>
-              <Text style={[styles.settingDescription, { color: colors.text }]}>Enable push notifications</Text>
-            </View>
-            <Switch
-              value={isNotificationsEnabled}
-              onValueChange={toggleNotifications}
-              trackColor={{ false: '#e5e5e5', true: '#6366f1' }}
-              thumbColor={'#fff'}
-            />
-          </View> */}
 
           <View style={[styles.settingItem, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
             <View style={[styles.settingIconContainer, { backgroundColor: colors.background, borderColor: colors.border }]}>
@@ -204,6 +222,69 @@ export default function SettingsScreen() {
           <Text style={[styles.logoutText, { color: colors.button.text }]}>{t('setting.log-out')}</Text>
         </Pressable>
       </ScrollView>
+
+      <Modal
+        visible={isOpen}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsOpen(false)}
+      >
+        <View 
+          style={[styles.modalOverlay, { backgroundColor: colors.modal.overlay }]}
+          // onPress={() => setIsOpen(false)}
+        >
+          <View style={[styles.form, { backgroundColor: colors.background }]}>
+            <Text style={[styles.title, { color: colors.titleText }]}>
+              {t('setting.profile')}
+            </Text>
+            <Pressable style={styles.rigth}
+              onPress={() => setIsOpen(false)}
+            >
+              <X size={25} color={ colors.button.textSecondary }/>
+            </Pressable>
+            <Text style={[styles.label, { color: colors.text }]}>
+              {t('onboarding.username')}
+            </Text>
+            <TextInput
+              style={[styles.input, { 
+                backgroundColor: colors.input.background,
+                borderColor: colors.input.border,
+                color: colors.input.text
+              }]}
+              value={username}
+              onChangeText={setUserName}
+              onChange={OnChangeValue}
+              placeholder={t('onboarding.usernamePlaceholder')}
+              placeholderTextColor={colors.input.placeholder}
+            />
+
+            <Text style={[styles.label, { color: colors.text }]}>
+              {t('onboarding.mail')}
+            </Text>
+            <TextInput
+              style={[styles.input, { 
+                backgroundColor: colors.input.background,
+                borderColor: colors.input.border,
+                color: colors.input.text
+              }]}
+              value={mail}
+              onChangeText={setMail}
+              onChange={OnChangeValue}
+              placeholder={t('onboarding.mailPlaceholder')}
+              placeholderTextColor={colors.input.placeholder}
+            />
+
+            <Pressable
+              style={[styles.button, { backgroundColor: isUserCanged ? colors.primary : colors.button.secondary }]}
+              onPress={() => { if (isUserCanged) handleSubmitUserChange(); }}
+            >
+              <Text style={[styles.buttonText, { color: isUserCanged ? colors.button.text : colors.button.secondary }]}>
+                {t('setting.update')}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -318,5 +399,55 @@ const styles = StyleSheet.create({
     marginRight: -25,
     width: 25,
     zIndex: 1000
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 24,
+    textAlign: 'center',
+  },
+  form: {
+    gap: 16,
+    borderRadius: 8,
+    paddingVertical: 20,
+    paddingHorizontal: 35
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 4,
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    fontSize: 16,
+  },
+  button: {
+    height: 48,
+    width: 'auto',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  rigth: {
+    width: 30,
+    height: 30,
+    position: 'relative',
+    left: 220,
+    top: -83,
+    marginBottom: -54
   },
 });

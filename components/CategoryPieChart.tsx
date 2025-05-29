@@ -37,7 +37,7 @@ export const CategoryPieChart = () => {
       <View style={[styles.container, {backgroundColor: colors.card}]}>
         <Text style={[styles.title, { color: colors.titleText}]}>{t('home.category')}</Text>
         <View style={styles.emptyContainer}>
-          <Text style={[styles.emptyText, {color: colors.settingDescription}]}>No spending data for this month</Text>
+          <Text style={[styles.emptyText, {color: colors.settingDescription}]}>{t('home.no-data')}</Text>
         </View>
       </View>
     );

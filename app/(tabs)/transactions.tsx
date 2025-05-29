@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable, Modal, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -12,7 +12,10 @@ import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { router, useRouter } from 'expo-router';
+import { router, useFocusEffect, useRouter } from 'expo-router';
+import Animated, { FadeIn, FadeInDown,
+  useSharedValue, useAnimatedStyle,
+  withTiming,  withSpring } from 'react-native-reanimated';
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -70,6 +73,50 @@ export default function TransactionsScreen() {
   const [SearchText, setSearchText] = useState('');
   
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(20);
+  const scale = useSharedValue(0.8);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Réinitialise les valeurs
+      opacity.value = 0;
+      translateY.value = 20;
+      scale.value = 0.8;
+
+      // Lance l’animation
+      opacity.value = withTiming(1, { duration: 800 });
+      translateY.value = withTiming(0, { duration: 800 });
+      scale.value = withSpring(1, { damping: 8 });
+
+      // Optionnel : nettoyage
+      return () => {
+        // Si tu veux réinitialiser à chaque sortie, sinon retire
+        opacity.value = 0;
+        translateY.value = 20;
+        scale.value = 0.8;
+      };
+    }, [])
+  );
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: opacity.value,
+      transform: [
+        { translateY: translateY.value },
+        { scale: scale.value },
+      ],
+    };
+  });
+  
+  const animatedHeaderStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateY: translateY.value },
+        { scale: scale.value },
+      ],
+    };
+  });
 
   // Sort transactions by date, most recent first
   const sortedTransactions = [...transactions]
@@ -149,14 +196,18 @@ export default function TransactionsScreen() {
     <SafeAreaView style={[styles.container, { backgroundColor: colors.b_background }]} edges={['top']}>
       <StatusBar style={isDark ? "dark" : "light"} />
       
-      <View style={styles.header}>
+      <Animated.View
+        style={[styles.header/*, animatedHeaderStyle*/]}
+      >
         <Text style={[styles.titleText, { color: colors.titleText }]}>{t('transaction.transactions')}</Text>
 
         <Pressable style={styles.Right} onPress={() => router.push('/settings')}>
             {isDark ? <Settings size='30' color='#fff' /> : <Settings size='30' color='#000' />}
         </Pressable>
 
-        <View style={styles.searchContainer}>
+        <Animated.View
+          style={[styles.searchContainer, animatedStyle]}
+        >
           <View style={[styles.searchInputContainer, { backgroundColor: colors.input.background }]}>
             <Search size={20} color={colors.input.placeholder} />
             <TextInput
@@ -173,9 +224,11 @@ export default function TransactionsScreen() {
             >
             <Filter size={20} color={colors.button.textSecondary} />
           </Pressable>
-        </View>
+        </Animated.View>
         
-        <View style={[styles.filterContainer, { backgroundColor: colors.card }]}>
+        <Animated.View
+          style={[styles.filterContainer, { backgroundColor: colors.card }, animatedStyle]}
+        >
           <Pressable 
             style={[
               styles.filterTab,
@@ -223,39 +276,47 @@ export default function TransactionsScreen() {
               {t('balance.income')}
             </Text>
           </Pressable>
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
       
       {transactions.length === 0 ? (
-        <View style={[styles.emptyContainer, { backgroundColor: colors.card }]}>
-          <Text style={[styles.emptyTitle, { color: colors.sectionTitle }]}>No transactions yet</Text>
+        <Animated.View
+          style={[styles.emptyContainer, { backgroundColor: colors.card }, animatedStyle]}
+        >
+          <Text style={[styles.emptyTitle, { color: colors.sectionTitle }]}>{t('transaction.no-transactions')}</Text>
           <Text style={[styles.emptyText, { color: colors.settingDescription }]}>
-            Add your first transaction by tapping the + button below
+          {t('transaction.add-first')}
           </Text>
-        </View>
+        </Animated.View>
       ) : filteredTransactions.length === 0 ? (
-        <View style={[styles.emptyContainer, { backgroundColor: colors.card }]}>
+        <Animated.View
+          style={[styles.emptyContainer, { backgroundColor: colors.card }, animatedStyle]}
+        >
           <Text style={[styles.emptyTitle, { color: colors.sectionTitle }]}>No {activeFilter} transactions</Text>
           <Text style={[styles.emptyText, { color: colors.settingDescription }]}>
-            Try changing the filter or add a new transaction
+            {t('transaction.no-transactions-type')}
           </Text>
-        </View>
+        </Animated.View>
       ) : (
-        <FlatList
-          data={sections}
-          keyExtractor={(item) => item.date}
-          renderItem={({ item }) => (
-            <>
-              {renderSectionHeader(item.date)}
-              {item.data.map((transaction) => (
-                <View key={transaction.id}>
-                  {renderItem({ item: transaction })}
-                </View>
-              ))}
-            </>
-          )}
-          contentContainerStyle={styles.listContent}
-        />
+        <Animated.View
+          style={ animatedStyle }
+        >
+          <FlatList
+            data={sections}
+            keyExtractor={(item) => item.date}
+            renderItem={({ item }) => (
+              <>
+                {renderSectionHeader(item.date)}
+                {item.data.map((transaction) => (
+                  <View key={transaction.id}>
+                    {renderItem({ item: transaction })}
+                  </View>
+                ))}
+              </>
+            )}
+            contentContainerStyle={styles.listContent}
+          />
+        </Animated.View>
       )}
       
       <AddTransactionButton onPress={handleAddTransaction} />

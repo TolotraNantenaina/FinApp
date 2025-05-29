@@ -77,9 +77,9 @@ export const RecentTransactions = ({ navigation }: { navigation: any }) => {
           <Text style={[styles.title, { color: colors.titleText}]}>{t('home.transaction')}</Text>
         </View>
         <View style={styles.emptyState}>
-          <Text style={[styles.emptyStateText, { color: colors.sectionTitle}]}>No transactions yet</Text>
+          <Text style={[styles.emptyStateText, { color: colors.sectionTitle}]}>{t('transaction.no-transactions')}</Text>
           <Text style={[styles.emptyStateSubtext, { color: colors.settingDescription}]}>
-            Add your first transaction by tapping the + button below
+            {t('transaction.add-first')}
           </Text>
         </View>
       </View>

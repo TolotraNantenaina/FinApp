@@ -35,20 +35,22 @@ export default function TransactionDetails() {
   const [isEditModalVisible, setEditModalVisible] = useState(false);
 
   const transactionId : string = route.params?.transactionId || '';
-  const transaction: Transaction = route.params?.transaction ? JSON.parse(route.params?.transaction) : {
+  const [transaction, setTransaction] = useState(route.params?.transaction ? JSON.parse(route.params?.transaction) : {
     name: 'Achat Supermarché',
     amount: 42.50,
     date: '2024-06-01',
     categoryId: 'Alimentation',
     description: 'Courses du samedi',
     type: 'expense', // Valeur par défaut
-  };
+  });
 
   // Récupérer les données de la transaction si seulement l'id est passé
   useEffect(() => {
     if (transactionId && !route.params?.transaction) {
       const fetchedTransaction = getTransactionById(transactionId);
       if (fetchedTransaction) {
+        console.log("Fetched transaction => ", fetchedTransaction)
+        setTransaction(fetchedTransaction);
         // Mettre à jour l'état local ou utiliser les données directement
         // Pour l'instant, nous utilisons les données passées ou par défaut,
         // cette partie pourrait être affinée si nécessaire pour fetcher.
@@ -135,7 +137,7 @@ export default function TransactionDetails() {
       </ScrollView>
 
       <Pressable style={[styles.button, { backgroundColor: colors.primary }]} onPress={handleEdit}>
-          <Text style={[styles.buttonText, { color: colors.button.text }]}>{t('detail.update') || 'Modifier'}</Text>
+          <Text style={[styles.buttonText, { color: colors.button.text }]}>{t('detail.update')}</Text>
       </Pressable>
 
       <Modal
@@ -145,7 +147,7 @@ export default function TransactionDetails() {
         onRequestClose={handleEditCancel}
       >
         <SafeAreaView style={[styles.modalContainer, { backgroundColor: colors.card }]}> 
-          <Text style={[styles.modalTitle, { color: colors.titleText, borderBottomColor: colors.border }]}>{t('common.edit') || 'Modifier'} la transaction</Text>
+          <Text style={[styles.modalTitle, { color: colors.titleText, borderBottomColor: colors.border }]}>{t('detail.edit-transactions')}</Text>
           <TransactionModifForm 
             transactionId={transactionId}
             onSubmit={handleEditSubmit}

@@ -19,10 +19,12 @@
   "home": {
     "welcome" : "Hallöchen",
     "headText": "Finanzieller Üerblick",
-    "category": "Ausgaben nach Kategorie", 
+    "category": "Ausgaben nach Kategorie",
+    "no-data": "No spending data for this month",
     "transaction": "Letzte Transaktionen",
     "all" : "Alle anzeigen",
-    "add" : "Transaktion hinzufügen"
+    "add" : "Transaktion hinzufügen",
+    "no-expense" : "Pas de depense pour cet mois"
   },
   "balance": {
     "balance": "Aktuller Saldo",
@@ -32,7 +34,10 @@
   "transaction": {
     "transactions": "Transaktionen",
     "search": "Transaktionen suchen",
-    "all" : "Alle"
+    "all" : "Alle",
+    "no-transactions": "No transactions yet",
+    "add-first": "Add your first transaction by tapping the + button below",
+    "no-transactions-type": "Try changing the filter or add a new transaction"
   },
   "statistic": {
     "statistics": "Statistiken",
@@ -60,5 +65,22 @@
     "help" : "Help Center",
     "helpdesc": "Get help and contact support",
     "log-out": "Log Out"
+  },
+  "detail": {
+    "update": "Update",
+    "edit-transactions": "Edit transaction",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "onboarding": {
+    "welcome": "Bienvenue dans FinApp",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Entrez votre nom",
+    "initialBalance": "Solde initial",
+    "balancePlaceholder": "Entrez votre solde initial",
+    "start": "Commencer",
+    "error": "Erreur",
+    "usernameRequired": "Veuillez entrer un nom d'utilisateur",
+    "validBalance": "Veuillez entrer un solde valide"
   }
 } 
