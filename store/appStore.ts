@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Transaction, Category, Budget } from '@/types';
+import { Transaction, Category, Budget, User } from '@/types';
 import { format } from 'date-fns';
 
 interface AppState {
+  user: User | undefined;
   transactions: Transaction[];
   categories: Category[];
   budgets: Budget[];
@@ -13,6 +14,10 @@ interface AppState {
     symbol: string;
     locale: string;
   };
+
+  // User methods
+  setUser: (user: User) => void;
+  getUser: () => User | undefined;
   
   // Transactions methods
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
@@ -57,6 +62,7 @@ const generateId = () => Math.random().toString(36).substring(2, 15);
 export const useAppStore = create<AppState>()(
   persist(
     (set:any, get) => ({
+      user: undefined,
       transactions: [],
       categories: [
         { id: 'food', name: 'Food & Drinks', icon: 'utensils', color: '#FF9F1C' },
@@ -72,6 +78,21 @@ export const useAppStore = create<AppState>()(
       initialBalance: 0,
       currency: currencies.EUR,
       
+      // User methods
+      getUser: () => {
+        const { user } = get();
+        return user;
+      },
+      setUser: (user: User) => {
+        const newUser = {
+          ...user,
+          id: generateId(),
+        };
+        set((state: any) => ({
+          user : {...state.user, ...newUser},
+        }));
+      },
+
       // Transactions methods
       addTransaction: (transaction:any) => {
         const newTransaction = {

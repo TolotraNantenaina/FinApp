@@ -17,12 +17,14 @@
     "password": "Mot de passe"
   },
   "home": {
-    "welcome" : "Bonjour toi",
+    "welcome" : "Bonjour",
     "headText": "Aperçu Financier",
     "category": "Dépenses par Catégorie",
+    "no-data": "Pas de données à afficher pour ce mois",
     "transaction": "Transactions Récentes",
     "all" : "Tout Voir",
-    "add" : "Ajouter une Transaction"
+    "add" : "Ajouter une Transaction",
+    "no-expense" : "Pas de depense pour cet mois" 
   },
   "balance": {
     "balance": "Solde actuel",
@@ -32,7 +34,10 @@
   "transaction": {
     "transactions": "Transactions",
     "search": "Recherche de transactions",
-    "all" : "Tout"
+    "all" : "Tout",
+    "no-transactions": "Pas transactions du tout",
+    "add-first": "Ajoute ton premier transaction en appuyant sur le button + à côté",
+    "no-transactions-type": "Essayer de changer de filtre ou ajouter de nouveau transaction"
   },
   "statistic": {
     "statistics": "Statistiques",
@@ -60,5 +65,24 @@
     "help" : "Center d'aide",
     "helpdesc": "Recevoir de l'aide et une contacte de support",
     "log-out": "Quitter"
+  },
+  "detail": {
+    "update": "Modifier",
+    "edit-transactions": "Edit transaction",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "onboarding": {
+    "welcome": "Bienvenue dans FinApp",
+    "username": "Nom d'utilisateur",
+    "usernamePlaceholder": "Entrez votre nom",
+    "mail": "E-mail de l'utilisateur",
+    "mailPlaceholder": "Entrez votre e-mail",
+    "initialBalance": "Solde initial",
+    "balancePlaceholder": "Entrez votre solde initial",
+    "start": "Commencer",
+    "error": "Erreur",
+    "usernameRequired": "Veuillez entrer un nom d'utilisateur",
+    "validBalance": "Veuillez entrer un solde valide"
   }
 } 
