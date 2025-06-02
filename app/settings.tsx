@@ -98,7 +98,7 @@ export default function SettingsScreen() {
 
       <View style={styles.header}>
         <Pressable onPress={() => {
-            let dir = '/(tabs)/'
+            let dir = '/(tabs)'
             router.canGoBack() ? router.back() : router.navigate(dir as Href)
             }}
           style={styles.backButton}>
