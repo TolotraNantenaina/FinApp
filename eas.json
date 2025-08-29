@@ -4,20 +4,54 @@
       "appVersionSource": "remote"
     },
     "build": {
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal",
+        "env": {
+          "NODE_ENV": "development",
+          "ANDROID_SDK_ROOT": "/home/tolotra/Android/Sdk",
+          "ANDROID_HOME": "/home/tolotra/Android/Sdk"
+        },
+        "android": {
+          "buildType": "apk",
+          "gradleCommand": ":app:assembleDebug"
+        },
+        "ios": {
+          "simulator": true
+        }
+      },
       "preview": {
+        "env": { 
+          "NODE_ENV": "test"
+        },
+        "prebuildCommand": "echo 'EXPO_ROUTER_APP_ROOT=./app' > .env && echo 'Configuring expo-router for standalone build'",
         "android": {
           "buildType": "apk",
           "gradleCommand": ":app:assembleRelease"
+        },
+        "ios": {
+          "simulator": true
         }
       },
       "preview2": {
+        "env": { "NODE_ENV": "test" },
         "android": {
           "gradleCommand": ":app:assembleRelease"
+        },
+        "ios": {
+          "simulator": true
         }
       },
       "production": {
+        "env": { 
+          "NODE_ENV": "production",
+          "EXPO_ROUTER_APP_ROOT": "./app"
+        },
         "android": {
-          "buildType": "app-bundle"
+          "buildType": "apk"
+        },
+        "ios": {
+          "simulator": false
         }
       }
     }
