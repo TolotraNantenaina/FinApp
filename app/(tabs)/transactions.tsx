@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 import '../../i18n';
 import { useTheme } from '@/store/themeStore';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Toastable from 'react-native-toastable';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useFocusEffect, useRouter } from 'expo-router';
 import Animated, { FadeIn, FadeInDown,
   useSharedValue, useAnimatedStyle,
@@ -66,6 +68,7 @@ export default function TransactionsScreen() {
   const { t } = useTranslation();
 
   const { colors, isDark } = useTheme();
+  const { top } = useSafeAreaInsets();
 
   const { transactions, categories } = useAppStore();
   const [activeFilter, setActiveFilter] = useState<TransactionType | 'all'>('all');
@@ -332,6 +335,7 @@ export default function TransactionsScreen() {
             onSubmit={handleTransactionSubmit}
             onCancel={handleCancel}
           />
+          <Toastable offset={top + 8} containerStyle={{ alignItems: 'flex-end', marginTop: 16, marginLeft: 16, zIndex: 9999 }} />
         </SafeAreaView>
       </Modal>
     </SafeAreaView>

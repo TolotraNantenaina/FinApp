@@ -23,6 +23,8 @@ import { useTheme } from '@/store/themeStore';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, router } from 'expo-router';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { showToastable, ToastableBodyParams } from 'react-native-toastable';
+import { RenderToast } from '@/components/renderToast';
 
 
 export default function SettingsScreen() {
@@ -45,9 +47,23 @@ export default function SettingsScreen() {
     const newBalance = parseFloat(balanceText);
     if (!isNaN(newBalance)) {
       setInitialBalance(newBalance);
-      Alert.alert('Success', 'Initial balance updated successfully');
+      showToastable({
+        title: t('onboarding.success'),
+        message: 'Initial balance updated successfully',
+        status: 'success',
+        renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+          <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+        ),
+      });
     } else {
-      Alert.alert('Error', 'Please enter a valid number');
+      showToastable({
+        title: t('onboarding.error'),
+        message: 'Please enter a valid number',
+        status: 'danger',
+        renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+          <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+        ),
+      });
     }
   };
 

@@ -81,8 +81,10 @@
     "initialBalance": "Solde initial",
     "balancePlaceholder": "Entrez votre solde initial",
     "start": "Commencer",
+    "success": "Succès",
     "error": "Erreur",
     "usernameRequired": "Veuillez entrer un nom d'utilisateur",
-    "validBalance": "Veuillez entrer un solde valide"
+    "validBalance": "Veuillez entrer un solde valide",
+    "submitSuccess": "Solde initial enregistré avec succès"
   }
 } 

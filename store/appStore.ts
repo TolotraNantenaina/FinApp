@@ -1,5 +1,7 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Transaction, Category, Budget, User } from '@/types';
 import { format } from 'date-fns';
 
@@ -56,6 +58,17 @@ const currencies = {
   MGA: { code: 'MGA', symbol: 'Ar', locale: 'mg-MG' },
 };
 
+const categories = [
+  { id: 'food', name: 'Food & Drinks', icon: 'utensils', color: '#FF9F1C' },
+  { id: 'transport', name: 'Transport', icon: 'bus', color: '#2EC4B6' },
+  { id: 'shopping', name: 'Shopping', icon: 'shopping-bag', color: '#E71D36' },
+  { id: 'entertainment', name: 'Entertainment', icon: 'film', color: '#011627' },
+  { id: 'bills', name: 'Bills & Utilities', icon: 'file-invoice', color: '#6D10FF' },
+  { id: 'health', name: 'Health', icon: 'heartbeat', color: '#8AC926' },
+  { id: 'salary', name: 'Salary', icon: 'money-bill-wave', color: '#38A3A5' },
+  { id: 'other', name: 'Other', icon: 'ellipsis-h', color: '#7d7d7d' },
+];
+
 // Helper to generate a simple UUID
 const generateId = () => Math.random().toString(36).substring(2, 15);
 
@@ -64,16 +77,7 @@ export const useAppStore = create<AppState>()(
     (set:any, get) => ({
       user: undefined,
       transactions: [],
-      categories: [
-        { id: 'food', name: 'Food & Drinks', icon: 'utensils', color: '#FF9F1C' },
-        { id: 'transport', name: 'Transport', icon: 'bus', color: '#2EC4B6' },
-        { id: 'shopping', name: 'Shopping', icon: 'shopping-bag', color: '#E71D36' },
-        { id: 'entertainment', name: 'Entertainment', icon: 'film', color: '#011627' },
-        { id: 'bills', name: 'Bills & Utilities', icon: 'file-invoice', color: '#6D10FF' },
-        { id: 'health', name: 'Health', icon: 'heartbeat', color: '#8AC926' },
-        { id: 'salary', name: 'Salary', icon: 'money-bill-wave', color: '#38A3A5' },
-        { id: 'other', name: 'Other', icon: 'ellipsis-h', color: '#7d7d7d' },
-      ],
+      categories: categories,
       budgets: [],
       initialBalance: 0,
       currency: currencies.EUR,
@@ -250,6 +254,12 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'finance-app-storage',
+      storage: createJSONStorage(() => {
+        if (Platform.OS === 'web') {
+          return typeof window !== 'undefined' && window.localStorage ? window.localStorage : undefined as any;
+        }
+        return AsyncStorage as any;
+      }),
     }
   )
 );

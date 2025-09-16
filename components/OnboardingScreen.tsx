@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Pressable } from 'react-native';
+import { showToastable, type ToastableBodyParams } from 'react-native-toastable';
 import { useTheme } from '@/store/themeStore';
 import { useAppStore } from '@/store/appStore';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +9,7 @@ import { useNavigation } from 'expo-router';
 import { CurrencySelector } from './CurrencySelector';
 import { LanguageSelector } from './LanguageSelector';
 import { ThemeSelector } from './ThemeSelector';
+import { RenderToast } from './renderToast';
 
 export function OnboardingScreen() {
   const { t } = useTranslation();
@@ -20,13 +22,27 @@ export function OnboardingScreen() {
 
   const handleSubmit = () => {
     if (!username.trim()) {
-      Alert.alert(t('onboarding.error'), t('onboarding.usernameRequired'));
+      showToastable({
+        title: t('onboarding.error'),
+        message: t('onboarding.usernameRequired'),
+        status: 'danger',
+        renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+          <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+        ),
+      });
       return;
     }
 
     const balance = parseFloat(initialBalance);
     if (isNaN(balance)) {
-      Alert.alert(t('onboarding.error'), t('onboarding.validBalance'));
+      showToastable({
+        title: t('onboarding.error'),
+        message: t('onboarding.validBalance'),
+        status: 'danger',
+        renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+          <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+        ),
+      });
       return;
     }
 
@@ -39,8 +55,20 @@ export function OnboardingScreen() {
 
     setUser(newUser);
     setInitialBalance(balance);
-    let dir = '/(tabs)/index';
-    navigation.navigate(dir);
+
+    showToastable({
+      title: t('onboarding.success'),
+      message: t('onboarding.submitSuccess'),
+      status: 'success',
+      renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+        <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+      ),
+    });
+
+    setTimeout(() => {
+      let dir = '/(tabs)/index';
+      navigation.navigate(dir);
+    }, 1000);
   };
 
   return (
@@ -66,11 +94,11 @@ export function OnboardingScreen() {
             placeholderTextColor={colors.input.placeholder}
           />
           
-          <View style={[{ backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <Text style={[styles.label, { color: colors.text }]}>
+          <View style={[styles.row]}>
+            <Text style={[styles.labelInline, { color: colors.text }]}>
                 {t('setting.language')}
             </Text>
-            <View style={[{zIndex: 1002}, styles.rigth]}>
+            <View style={{ zIndex: 1002 }}>
               <LanguageSelector/>
             </View>
           </View>
@@ -96,20 +124,20 @@ export function OnboardingScreen() {
             keyboardType="default"
           />
 
-          <View style={[{ backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <Text style={[styles.label, { color: colors.text }]}>
+          <View style={[styles.row]}>
+            <Text style={[styles.labelInline, { color: colors.text }]}>
                 {t('setting.currency')}
             </Text>
-            <View style={[{zIndex: 1001,}, styles.rigth]}>
+            <View style={{ zIndex: 1001 }}>
               <CurrencySelector/>
             </View>
           </View>
 
-          <View style={[{ backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-            <Text style={[styles.label, { color: colors.text }]}>
+          <View style={[styles.row]}>
+            <Text style={[styles.labelInline, { color: colors.text }]}>
                 {t('setting.theme')}
             </Text>
-            <View style={[{zIndex: 1000, marginLeft: 266}, styles.rigth]}>
+            <View style={{ zIndex: 1000 }}>
                 <ThemeSelector/>
             </View>
           </View>
@@ -163,12 +191,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 4,
   },
+  labelInline: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 0,
+    flexShrink: 1,
+  },
   input: {
     height: 48,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
   },
   button: {
     height: 48,
@@ -182,8 +222,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   rigth: {
-    width: 94,
-    marginLeft: 270,
-    marginTop: -35
+    // Conservé pour compatibilité, ne plus utiliser
   },
 }); 

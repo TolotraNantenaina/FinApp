@@ -15,6 +15,9 @@ import { useAppStore } from '@/store/appStore';
 import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react-native';
 import { TransactionType } from '@/types';
 import { useTheme } from '@/store/themeStore';
+import { showToastable, ToastableBodyParams } from 'react-native-toastable';
+import { useTranslation } from 'react-i18next';
+import { RenderToast } from './renderToast';
 
 interface TransactionFormProps {
   onSubmit: () => void;
@@ -24,6 +27,7 @@ interface TransactionFormProps {
 export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) => {
   const { colors, isDark } = useTheme();
   const { addTransaction, categories, formatAmount } = useAppStore();
+  const { t } = useTranslation();
   
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
@@ -33,6 +37,16 @@ export const TransactionForm = ({ onSubmit, onCancel }: TransactionFormProps) =>
   const handleSubmit = () => {
     if (!amount || parseFloat(amount) <= 0 || isNaN(parseFloat(amount))) {
       // Handle validation error
+      console.log(t('onboarding.error'), t('onboarding.validBalance'));
+      
+      showToastable({
+        title: t('onboarding.error'),
+        message: t('onboarding.validBalance'),
+        status: 'danger',
+        renderContent: (p: Pick<ToastableBodyParams, 'message' | 'status' | 'title' | 'onPress'>) => (
+          <RenderToast title = {p.title as string} message={p.message as string} status={p.status} />
+        ),
+      });
       return;
     }
     
