@@ -1,7 +1,9 @@
 import React from 'react';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { Platform } from 'react-native';
 import { useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -20,6 +22,12 @@ export const useThemeStore = create<ThemeState>()(
     }),
     {
       name: 'theme-storage',
+      storage: createJSONStorage(() => {
+        if (Platform.OS === 'web') {
+          return typeof window !== 'undefined' && window.localStorage ? window.localStorage : undefined as any;
+        }
+        return AsyncStorage as any;
+      }),
     }
   )
 );
