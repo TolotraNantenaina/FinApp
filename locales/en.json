@@ -4,37 +4,37 @@
     "settings": "Settings",
     "language": "Language"
   },
+  "menu": {
+    "home": "Home",
+    "statistics": "Statistics",
+    "transactions": "Transactions",
+    "settings": "Settings"
+  },
   "auth": {
     "login": "Login",
     "register": "Register",
     "email": "Email",
     "password": "Password"
   },
-  "menu" : {
-    "home": "Home",
-    "statistics": "Statistics",
-    "transactions": "Transactions",
-    "settings": "Settings"
-  },
   "home": {
-    "welcome" : "Hello",
+    "welcome": "Hello",
     "headText": "Financial Overview",
     "category": "Spending by Category",
     "no-data": "No spending data for this month",
     "transaction": "Recent Transactions",
-    "all" : "View All",
-    "add" : "Add Transaction",
-    "no-expense" : "Pas de depense pour cet mois"
+    "all": "View All",
+    "add": "Add Transaction",
+    "no-expense": "No expenses for this month"
   },
   "balance": {
     "balance": "Current Balance",
     "income": "Income",
-    "expense": "Expense"
+    "expense": "Expenses"
   },
   "transaction": {
     "transactions": "Transactions",
     "search": "Search transactions",
-    "all" : "All",
+    "all": "All",
     "no-transactions": "No transactions yet",
     "add-first": "Add your first transaction by tapping the + button below",
     "no-transactions-type": "Try changing the filter or add a new transaction"
@@ -57,12 +57,12 @@
     "language": "Language",
     "languagedesc": "Select the language you want to use",
     "currency": "Currency",
-    "currencydesc": "Select the Currency you want to use",
+    "currencydesc": "Select the currency you want to use",
     "financial": "Financial",
     "init": "Initial Balance",
     "update": "Update",
     "support": "Support",
-    "help" : "Help Center",
+    "help": "Help Center",
     "helpdesc": "Get help and contact support",
     "log-out": "Log Out"
   },
@@ -73,16 +73,16 @@
     "save": "Save"
   },
   "onboarding": {
-    "welcome": "Bienvenue dans FinApp",
-    "username": "Nom d'utilisateur",
-    "usernamePlaceholder": "Entrez votre nom",
-    "mail": "E-mail de l'utilisateur",
-    "mailPlaceholder": "Entrez votre e-mail",
-    "initialBalance": "Solde initial",
-    "balancePlaceholder": "Entrez votre solde initial",
-    "start": "Commencer",
-    "error": "Erreur",
-    "usernameRequired": "Veuillez entrer un nom d'utilisateur",
-    "validBalance": "Veuillez entrer un solde valide"
+    "welcome": "Welcome to FinApp",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your name",
+    "mail": "Email",
+    "mailPlaceholder": "Enter your email",
+    "initialBalance": "Initial balance",
+    "balancePlaceholder": "Enter your initial balance",
+    "start": "Get Started",
+    "error": "Error",
+    "usernameRequired": "Please enter a username",
+    "validBalance": "Please enter a valid balance"
   }
-} 
+}

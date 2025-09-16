@@ -4,40 +4,40 @@
     "settings": "Einstellungen",
     "language": "Sprache"
   },
+  "menu": {
+    "home": "Startseite",
+    "statistics": "Statistiken",
+    "transactions": "Transaktionen",
+    "settings": "Einstellungen"
+  },
   "auth": {
     "login": "Anmelden",
     "register": "Registrieren",
     "email": "E-Mail",
     "password": "Passwort"
   },
-  "menu" : {
-    "home": "Heim",
-    "statistics": "Statistiken",
-    "transactions": "Transaktionen",
-    "settings": "Einstellungen"
-  },
   "home": {
-    "welcome" : "Hallöchen",
-    "headText": "Finanzieller Üerblick",
+    "welcome": "Hallo",
+    "headText": "Finanzübersicht",
     "category": "Ausgaben nach Kategorie",
-    "no-data": "No spending data for this month",
+    "no-data": "Keine Ausgabendaten für diesen Monat",
     "transaction": "Letzte Transaktionen",
-    "all" : "Alle anzeigen",
-    "add" : "Transaktion hinzufügen",
-    "no-expense" : "Pas de depense pour cet mois"
+    "all": "Alle anzeigen",
+    "add": "Transaktion hinzufügen",
+    "no-expense": "Keine Ausgaben in diesem Monat"
   },
   "balance": {
-    "balance": "Aktuller Saldo",
-    "income": "Einkommen",
-    "expense": "Ausgabe"
+    "balance": "Aktueller Saldo",
+    "income": "Einnahmen",
+    "expense": "Ausgaben"
   },
   "transaction": {
     "transactions": "Transaktionen",
     "search": "Transaktionen suchen",
-    "all" : "Alle",
-    "no-transactions": "No transactions yet",
-    "add-first": "Add your first transaction by tapping the + button below",
-    "no-transactions-type": "Try changing the filter or add a new transaction"
+    "all": "Alle",
+    "no-transactions": "Noch keine Transaktionen",
+    "add-first": "Füge deine erste Transaktion hinzu, indem du unten auf + tippst",
+    "no-transactions-type": "Versuche den Filter zu ändern oder füge eine neue Transaktion hinzu"
   },
   "statistic": {
     "statistics": "Statistiken",
@@ -46,41 +46,43 @@
   },
   "setting": {
     "settings": "Einstellungen",
-    "account": "Account",
-    "profile": "Profile",
-    "profiledesc": "Manage your personal information",
-    "payment": "Payment Methods",
-    "paymentdesc": "Add or remove payment methods",
-    "preferences": "Preferences",
-    "theme": "Theme",
-    "themedesc": "Choose the theme that suits you",
-    "language": "Language",
-    "languagedesc": "Select the language you want to use",
-    "currency": "Currency",
-    "currencydesc": "Select the Currency you want to use",
-    "financial": "Financial",
-    "init": "Initial Balance",
-    "update": "Update",
+    "account": "Konto",
+    "profile": "Profil",
+    "profiledesc": "Verwalte deine persönlichen Informationen",
+    "payment": "Zahlungsmethoden",
+    "paymentdesc": "Zahlungsmethoden hinzufügen oder entfernen",
+    "preferences": "Präferenzen",
+    "theme": "Thema",
+    "themedesc": "Wähle das Thema, das zu dir passt",
+    "language": "Sprache",
+    "languagedesc": "Wähle die Sprache, die du verwenden möchtest",
+    "currency": "Währung",
+    "currencydesc": "Wähle die Währung, die du verwenden möchtest",
+    "financial": "Finanziell",
+    "init": "Anfangssaldo",
+    "update": "Aktualisieren",
     "support": "Support",
-    "help" : "Help Center",
-    "helpdesc": "Get help and contact support",
-    "log-out": "Log Out"
+    "help": "Hilfe-Center",
+    "helpdesc": "Erhalte Hilfe und kontaktiere den Support",
+    "log-out": "Abmelden"
   },
   "detail": {
-    "update": "Update",
-    "edit-transactions": "Edit transaction",
-    "cancel": "Annuler",
-    "save": "Enregistrer"
+    "update": "Aktualisieren",
+    "edit-transactions": "Transaktion bearbeiten",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
   },
   "onboarding": {
-    "welcome": "Bienvenue dans FinApp",
-    "username": "Nom d'utilisateur",
-    "usernamePlaceholder": "Entrez votre nom",
-    "initialBalance": "Solde initial",
-    "balancePlaceholder": "Entrez votre solde initial",
-    "start": "Commencer",
-    "error": "Erreur",
-    "usernameRequired": "Veuillez entrer un nom d'utilisateur",
-    "validBalance": "Veuillez entrer un solde valide"
+    "welcome": "Willkommen bei FinApp",
+    "username": "Benutzername",
+    "usernamePlaceholder": "Gib deinen Namen ein",
+    "mail": "E-Mail",
+    "mailPlaceholder": "Gib deine E-Mail ein",
+    "initialBalance": "Anfangssaldo",
+    "balancePlaceholder": "Gib deinen Anfangssaldo ein",
+    "start": "Starten",
+    "error": "Fehler",
+    "usernameRequired": "Bitte gib einen Benutzernamen ein",
+    "validBalance": "Bitte gib einen gültigen Saldo ein"
   }
-} 
+}
