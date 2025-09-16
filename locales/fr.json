@@ -4,7 +4,7 @@
     "settings": "Paramètres",
     "language": "Langue"
   },
-  "menu" : {
+  "menu": {
     "home": "Accueil",
     "statistics": "Statistiques",
     "transactions": "Transactions",
@@ -13,31 +13,31 @@
   "auth": {
     "login": "Connexion",
     "register": "Inscription",
-    "email": "Email",
+    "email": "E-mail",
     "password": "Mot de passe"
   },
   "home": {
-    "welcome" : "Bonjour",
-    "headText": "Aperçu Financier",
-    "category": "Dépenses par Catégorie",
+    "welcome": "Bonjour",
+    "headText": "Aperçu financier",
+    "category": "Dépenses par catégorie",
     "no-data": "Pas de données à afficher pour ce mois",
-    "transaction": "Transactions Récentes",
-    "all" : "Tout Voir",
-    "add" : "Ajouter une Transaction",
-    "no-expense" : "Pas de depense pour cet mois" 
+    "transaction": "Transactions récentes",
+    "all": "Tout voir",
+    "add": "Ajouter une transaction",
+    "no-expense": "Pas de dépense pour ce mois"
   },
   "balance": {
     "balance": "Solde actuel",
-    "income": "Revenu",
+    "income": "Revenus",
     "expense": "Dépenses"
   },
   "transaction": {
     "transactions": "Transactions",
     "search": "Recherche de transactions",
-    "all" : "Tout",
-    "no-transactions": "Pas transactions du tout",
-    "add-first": "Ajoute ton premier transaction en appuyant sur le button + à côté",
-    "no-transactions-type": "Essayer de changer de filtre ou ajouter de nouveau transaction"
+    "all": "Tout",
+    "no-transactions": "Aucune transaction pour le moment",
+    "add-first": "Ajoutez votre première transaction en appuyant sur le bouton + ci-dessous",
+    "no-transactions-type": "Essayez de changer le filtre ou ajoutez une nouvelle transaction"
   },
   "statistic": {
     "statistics": "Statistiques",
@@ -47,28 +47,28 @@
   "setting": {
     "settings": "Paramètres",
     "account": "Compte",
-    "profile": "Profile",
-    "profiledesc": "Gérer vos information personnel",
-    "payment": "Mode de Paiement",
-    "paymentdesc": "Ajouter or supprimer une Mode de Paiement",
+    "profile": "Profil",
+    "profiledesc": "Gérez vos informations personnelles",
+    "payment": "Moyens de paiement",
+    "paymentdesc": "Ajouter ou supprimer un moyen de paiement",
     "preferences": "Préférences",
-    "theme": "Thême",
-    "themedesc": "Choisir une thême qui vous covient",
+    "theme": "Thème",
+    "themedesc": "Choisissez le thème qui vous convient",
     "language": "Langue",
-    "languagedesc": "Choisir une langue pour vous",
+    "languagedesc": "Sélectionnez la langue que vous souhaitez utiliser",
     "currency": "Monnaie",
-    "currencydesc": "Choisir le Monnaie de change approprié",
-    "financial": "Financial",
-    "init": "Solde Initial",
-    "update": "Mise-à-jour",
+    "currencydesc": "Sélectionnez la monnaie que vous souhaitez utiliser",
+    "financial": "Financier",
+    "init": "Solde initial",
+    "update": "Mise à jour",
     "support": "Support",
-    "help" : "Center d'aide",
-    "helpdesc": "Recevoir de l'aide et une contacte de support",
-    "log-out": "Quitter"
+    "help": "Centre d'aide",
+    "helpdesc": "Obtenez de l'aide et contactez le support",
+    "log-out": "Déconnexion"
   },
   "detail": {
-    "update": "Modifier",
-    "edit-transactions": "Edit transaction",
+    "update": "Mettre à jour",
+    "edit-transactions": "Modifier la transaction",
     "cancel": "Annuler",
     "save": "Enregistrer"
   },
@@ -76,7 +76,7 @@
     "welcome": "Bienvenue dans FinApp",
     "username": "Nom d'utilisateur",
     "usernamePlaceholder": "Entrez votre nom",
-    "mail": "E-mail de l'utilisateur",
+    "mail": "E-mail",
     "mailPlaceholder": "Entrez votre e-mail",
     "initialBalance": "Solde initial",
     "balancePlaceholder": "Entrez votre solde initial",
@@ -85,4 +85,4 @@
     "usernameRequired": "Veuillez entrer un nom d'utilisateur",
     "validBalance": "Veuillez entrer un solde valide"
   }
-} 
+}
