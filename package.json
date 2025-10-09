@@ -8,7 +8,11 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "postinstall": "node scripts/write-local-properties.js"
+    "postinstall": "node scripts/write-local-properties.js",
+    "rename:apk": "node scripts/rename-apk.js",
+    "rename:apk:production": "node scripts/rename-apk.js production",
+    "rename:apk:preview": "node scripts/rename-apk.js preview",
+    "rename:apk:development": "node scripts/rename-apk.js development"
   },
   "jest": {
     "preset": "jest-expo"
@@ -61,5 +65,6 @@
     "tailwindcss": "^3.3.2",
     "typescript": "~5.3.3"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

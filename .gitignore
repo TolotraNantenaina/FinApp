@@ -47,4 +47,5 @@ ios/
 android/
 
 # APKs
+apks/
 **/*.apk
